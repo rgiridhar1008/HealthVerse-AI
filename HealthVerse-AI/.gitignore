@@ -1,7 +1,0 @@
-node_modules/
-dist/
-
-# Environment files (never commit real secrets)
-.env
-.env.local
-.env.*.local
