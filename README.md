@@ -127,34 +127,34 @@ Unlike fragmented fitness trackers or isolated symptom questionnaires, HealthVer
 
 ```mermaid
 graph TB
-    subgraph Presentation_Layer [Presentation Layer (Frontend)]
+    subgraph Presentation_Layer ["Presentation Layer"]
         WebClient["React 18 + Vite + TypeScript Client<br/>Tailwind CSS & Lucide Icons (:5173)"]
     end
 
-    subgraph Edge_Routing [Edge Ingress & Governance]
-        Gateway["Spring Cloud Gateway (:8080)<br/>• Unified Reverse Proxy<br/>• Global CORS & Secure Headers<br/>• Path-Based Dynamic Routing<br/>• Client Decoupling"]
-        Eureka["Netflix Eureka Service Registry (:8761)<br/>• Dynamic Heartbeat & Discovery<br/>• Client-Side Load Balancing"]
+    subgraph Edge_Routing ["Edge Ingress & Governance"]
+        Gateway["Spring Cloud Gateway (:8080)<br/>Unified Reverse Proxy & CORS"]
+        Eureka["Netflix Eureka Service Registry (:8761)<br/>Dynamic Service Discovery"]
     end
 
-    subgraph Core_Microservices [Business Microservice Cluster]
-        AuthSvc["Auth Service (:8081)<br/>• BCrypt Password Hashing<br/>• Stateless JWT Issuer (HS384)"]
-        UserSvc["User & Twin Service (:8082)<br/>• Profile & Biometric Ledger<br/>• Digital Health Twin Aggregator"]
-        ReportSvc["Report Service (:8084)<br/>• PDF Document Storage<br/>• Binary Metadata Repository"]
-        AISvc["AI Analysis Service (:8085)<br/>• PDF Parsing & Extraction<br/>• Symptom Triage Management"]
-        NutFitSvc["Nutrition & Fitness (:8086)<br/>• Diet Plan Generation<br/>• Workout Routine Planner"]
-        WellSvc["Wellness Service (:8087)<br/>• Predictive Wellness Scoring<br/>• Habit & Mindfulness Tracker"]
+    subgraph Core_Microservices ["Business Microservice Cluster"]
+        AuthSvc["Auth Service (:8081)<br/>BCrypt & Stateless JWT Issuer"]
+        UserSvc["User & Twin Service (:8082)<br/>Profile & Digital Health Twin"]
+        ReportSvc["Report Service (:8084)<br/>PDF Document Storage"]
+        AISvc["AI Analysis Service (:8085)<br/>PDF Parsing & Symptom Triage"]
+        NutFitSvc["Nutrition & Fitness (:8086)<br/>Diet & Workout Planning"]
+        WellSvc["Wellness Service (:8087)<br/>Predictive Wellness Scoring"]
     end
 
-    subgraph AI_Intelligence [Agentic AI Layer]
-        AIAgent["Python FastAPI AI Service (:8000)<br/>• Modular Domain Agents<br/>• Structured JSON Synthesizer<br/>• Multi-turn Memory Engine"]
-        OllamaEngine["Local Ollama LLM (:11434)<br/>• Model: qwen2.5:7b<br/>• Zero Cloud Quota & 100% Privacy"]
-        GeminiEngine["Google Gemini Flash<br/>(Optional Cloud Fallback)"]
+    subgraph AI_Intelligence ["Agentic AI Layer"]
+        AIAgent["Python FastAPI AI Service (:8000)<br/>Domain Agents & JSON Synthesizer"]
+        OllamaEngine["Local Ollama LLM (:11434)<br/>Model: qwen2.5:7b"]
+        GeminiEngine["Google Gemini Flash<br/>Optional Cloud Fallback"]
     end
 
-    subgraph Polyglot_Data [Polyglot Persistence Layer]
-        PostgresDB[("PostgreSQL 15<br/>(Relational ACID)<br/>Users, Plans, Daily Metrics")]
-        MongoDB[("MongoDB 6.0<br/>(Document Store)<br/>Medical Reports & History")]
-        RedisDB[("Redis 7.0<br/>(In-Memory Cache)<br/>User Twin Profile State")]
+    subgraph Polyglot_Data ["Polyglot Persistence Layer"]
+        PostgresDB[("PostgreSQL 15<br/>Relational ACID Storage")]
+        MongoDB[("MongoDB 6.0<br/>Document Store for Reports")]
+        RedisDB[("Redis 7.0<br/>In-Memory Cache for Twin State")]
     end
 
     %% Routing
