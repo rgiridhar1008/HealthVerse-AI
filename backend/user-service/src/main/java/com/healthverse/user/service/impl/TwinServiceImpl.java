@@ -31,6 +31,7 @@ public class TwinServiceImpl implements TwinService {
 
     private final HealthProfileRepository healthProfileRepository;
     private final DailyHealthDataRepository dailyHealthDataRepository;
+    private final com.healthverse.user.repository.MedicationRepository medicationRepository;
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
 
@@ -351,8 +352,28 @@ public class TwinServiceImpl implements TwinService {
             else { missing.add("Medical Reports"); }
         } catch (Exception e) { dto.setMedicalReports(new ArrayList<>()); missing.add("Medical Reports"); }
 
-        // Medications (Service Removed)
-        dto.setMedications(new ArrayList<>());
+        // Medications
+        List<com.healthverse.user.entity.Medication> meds = medicationRepository.findByUserIdAndActiveTrueOrderByCreatedAtDesc(userId);
+        if (!meds.isEmpty()) {
+            List<Map<String, Object>> medsData = meds.stream().map(m -> {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", m.getId());
+                map.put("name", m.getName());
+                map.put("dosage", m.getDosage());
+                map.put("frequency", m.getFrequency());
+                map.put("timeOfDay", m.getTimeOfDay());
+                map.put("startDate", m.getStartDate());
+                map.put("instructions", m.getInstructions());
+                map.put("active", m.getActive());
+                return map;
+            }).collect(Collectors.toList());
+            dto.setMedications(medsData);
+            available.add("Medications");
+            filledCategories++;
+        } else {
+            dto.setMedications(new ArrayList<>());
+            missing.add("Medications");
+        }
         // Symptoms
         try {
             ResponseEntity<List<Map<String, Object>>> symptomsResponse = restTemplate.exchange(

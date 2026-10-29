@@ -127,6 +127,7 @@ const Nutrition = () => {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           onSaved={handlePreferencesSaved}
+          userId={user?.id || ''}
         />
       </motion.div>
     );

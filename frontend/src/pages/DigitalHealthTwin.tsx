@@ -4,8 +4,9 @@ import { ComprehensiveTwin } from '../types/twin';
 import { motion } from 'framer-motion';
 import { 
   Accessibility, Loader2, Activity, Pill, Apple, ShieldCheck, AlertCircle,
-  BrainCircuit, Heart, Zap, Sparkles, History, FileText, ClipboardList
+  BrainCircuit, Heart, Zap, Sparkles, History, FileText, ClipboardList, Plus
 } from 'lucide-react';
+import { AddMedicationModal } from '../components/AddMedicationModal';
 import { 
   LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
@@ -24,19 +25,21 @@ const DigitalHealthTwin = () => {
   const [twin, setTwin] = useState<ComprehensiveTwin | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isMedModalOpen, setIsMedModalOpen] = useState(false);
+
+  const fetchTwinData = async () => {
+    try {
+      const data = await twinApi.getComprehensiveTwin();
+      setTwin(data);
+    } catch (err: any) {
+      console.error('Failed to fetch comprehensive twin data:', err);
+      setError(err.response?.data?.message || 'Failed to connect to the Digital Twin service.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchTwinData = async () => {
-      try {
-        const data = await twinApi.getComprehensiveTwin();
-        setTwin(data);
-      } catch (err: any) {
-        console.error('Failed to fetch comprehensive twin data:', err);
-        setError(err.response?.data?.message || 'Failed to connect to the Digital Twin service.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
     fetchTwinData();
   }, []);
 
@@ -127,17 +130,28 @@ const DigitalHealthTwin = () => {
                 </div>
                 
                 <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                    <h3 className="font-bold text-slate-700 mb-2 flex items-center gap-2"><Pill className="w-4 h-4"/> Medications ({twin.medications.length})</h3>
+                    <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-bold text-slate-700 flex items-center gap-2"><Pill className="w-4 h-4"/> Medications ({twin.medications.length})</h3>
+                        <button 
+                            onClick={() => setIsMedModalOpen(true)}
+                            className="px-2 py-0.5 text-xs font-bold bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg flex items-center gap-1 transition"
+                        >
+                            <Plus className="w-3 h-3" /> Add
+                        </button>
+                    </div>
                     {twin.medications.length > 0 ? (
                         <ul className="text-sm space-y-2 max-h-32 overflow-y-auto">
                             {twin.medications.map((m, i) => (
-                                <li key={i} className="flex justify-between text-slate-600">
-                                    <span className="truncate pr-2">{m.name}</span>
-                                    <span className="text-xs shrink-0">{m.dosage}</span>
+                                <li key={i} className="flex justify-between items-center text-slate-600 bg-white px-2.5 py-1.5 rounded-lg border border-slate-100">
+                                    <div className="truncate pr-2">
+                                        <p className="font-semibold text-slate-800 text-xs">{m.name}</p>
+                                        <p className="text-[10px] text-slate-400">{m.frequency || m.timeOfDay || 'Active'}</p>
+                                    </div>
+                                    <span className="text-xs shrink-0 font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">{m.dosage || 'Active'}</span>
                                 </li>
                             ))}
                         </ul>
-                    ) : <p className="text-sm text-slate-400 italic">No data recorded.</p>}
+                    ) : <p className="text-sm text-slate-400 italic">No medications recorded.</p>}
                 </div>
 
                 <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
@@ -295,6 +309,11 @@ const DigitalHealthTwin = () => {
         </motion.div>
       </div>
 
+      <AddMedicationModal
+        isOpen={isMedModalOpen}
+        onClose={() => setIsMedModalOpen(false)}
+        onSuccess={fetchTwinData}
+      />
     </motion.div>
   );
 };

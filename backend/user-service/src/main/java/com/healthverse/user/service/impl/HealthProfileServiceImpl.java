@@ -72,6 +72,12 @@ public class HealthProfileServiceImpl implements HealthProfileService {
         if (request.getSleepPattern() != null) {
             profile.setSleepPattern(request.getSleepPattern().trim());
         }
+        if (request.getBloodGroup() != null) {
+            profile.setBloodGroup(request.getBloodGroup().trim());
+        }
+        if (request.getCurrentMedications() != null) {
+            profile.setCurrentMedications(request.getCurrentMedications().trim());
+        }
 
         // Calculate and update BMI if height and weight are available
         if (profile.getHeight() != null && profile.getWeight() != null && profile.getHeight() > 0) {
@@ -123,6 +129,8 @@ public class HealthProfileServiceImpl implements HealthProfileService {
                 .conditions(profile.getConditions())
                 .dietaryPreference(profile.getDietaryPreference())
                 .sleepPattern(profile.getSleepPattern())
+                .bloodGroup(profile.getBloodGroup())
+                .currentMedications(profile.getCurrentMedications())
                 .createdAt(profile.getCreatedAt())
                 .updatedAt(profile.getUpdatedAt())
                 .build();

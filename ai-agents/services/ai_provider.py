@@ -36,8 +36,12 @@ class AIProvider:
         feature: str = "general"
     ) -> str:
         """
-        Generate text completion via Ollama HTTP API.
+        Generate text completion via Ollama HTTP API or Mock provider for tests.
         """
+        if self.provider == "mock":
+            print(f"[AI-AGENT-MOCK] Generating mock response for feature={feature}")
+            return f"[TEST MOCK MODE] AI analysis result for {feature}."
+
         print(f"[AI-AGENT] Using provider={self.provider}")
         print(f"[AI-AGENT] Using model={self.model} feature={feature}")
         print(f"[AI-AGENT] Calling Ollama at {self.base_url}...")
@@ -98,9 +102,63 @@ class AIProvider:
         feature: str = "json"
     ) -> Dict[str, Any]:
         """
-        Generate structured JSON output via Ollama.
+        Generate structured JSON output via Ollama or Mock provider for tests.
         Enforces format="json" and cleans up markdown wrappers.
         """
+        if self.provider == "mock":
+            print(f"[AI-AGENT-MOCK] Generating mock structured JSON for feature={feature}")
+            if feature == "report":
+                return {
+                    "summary": "[MOCK TEST MODE] Blood profile shows healthy biomarker baseline.",
+                    "findings": [
+                        {"name": "Hemoglobin", "value": "14.2 g/dL", "status": "normal", "description": "Normal oxygen carrier"},
+                        {"name": "Total Cholesterol", "value": "210 mg/dL", "status": "attention", "description": "Borderline elevation"}
+                    ],
+                    "abnormal_values": [
+                        {"marker": "Total Cholesterol", "value": "210 mg/dL", "referenceRange": "< 200 mg/dL", "status": "HIGH", "explanation": "Slightly elevated lipid level"}
+                    ],
+                    "normal_values": ["Hemoglobin 14.2 g/dL", "Fasting Blood Sugar 92 mg/dL"],
+                    "explanations": "[MOCK TEST MODE] Biomarkers indicate overall stability with minor lipid optimization recommended.",
+                    "recommendations": ["Engage in 30 minutes of aerobic exercise daily.", "Increase soluble dietary fiber intake."],
+                    "disclaimer": "This analysis is for informational purposes only. Consult a healthcare professional."
+                }
+            elif feature == "symptom":
+                return {
+                    "insights": "[MOCK TEST MODE] Mild fatigue observed. Hydration and rest suggested.",
+                    "recommendations": ["Drink 2.5L water daily", "Aim for 8 hours of sleep"],
+                    "seekProfessionalCare": False
+                }
+            elif feature == "diet":
+                return {
+                    "dailyCalories": 2200,
+                    "macroSplit": {"protein": "140g", "carbs": "220g", "fats": "65g"},
+                    "meals": [
+                        {"meal": "Breakfast", "items": ["Oatmeal with berries", "Boiled eggs"], "calories": 450},
+                        {"meal": "Lunch", "items": ["Grilled chicken or lentils", "Quinoa and spinach"], "calories": 650},
+                        {"meal": "Dinner", "items": ["Baked salmon or tofu", "Steamed greens"], "calories": 550}
+                    ]
+                }
+            elif feature == "fitness":
+                return {
+                    "weeklyRoutine": [
+                        {"day": "Monday", "focus": "Cardio & Core", "duration": "40 mins"},
+                        {"day": "Wednesday", "focus": "Strength & Mobility", "duration": "45 mins"},
+                        {"day": "Friday", "focus": "Full Body Circuit", "duration": "40 mins"}
+                    ],
+                    "dailyStepTarget": 8500
+                }
+            elif feature == "wellness":
+                return {
+                    "area": "Stress & Circadian Rhythm",
+                    "trend": "Positive",
+                    "reason": "[MOCK TEST MODE] Rest cycles and activity patterns are well synchronized.",
+                    "recommendation": "Maintain regular bedtime schedules.",
+                    "confidence": "High",
+                    "contributing_factors": ["Adequate daily hydration", "Consistent rest intervals"],
+                    "evidence": ["Sleep duration within 7-8 hours range"]
+                }
+            return {"status": "ok", "mode": "mock", "feature": feature}
+
         print(f"[AI-AGENT] Using provider={self.provider}")
         print(f"[AI-AGENT] Using model={self.model} (format=json) feature={feature}")
         print(f"[AI-AGENT] Calling Ollama at {self.base_url}...")
@@ -164,8 +222,11 @@ class AIProvider:
         temperature: float = 0.7
     ) -> str:
         """
-        Chat completion using Ollama's chat API.
+        Chat completion using Ollama's chat API or Mock provider for tests.
         """
+        if self.provider == "mock":
+            return "[TEST MOCK MODE] Hello! I am your HealthVerse AI wellness assistant. How can I help you with your health goals today?"
+
         print(f"[AI-AGENT] Chat call using provider={self.provider}, model={self.model}")
         url = f"{self.base_url}/api/chat"
         payload = {

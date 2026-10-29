@@ -26,20 +26,30 @@ public class DailyHealthDataServiceImpl implements DailyHealthDataService {
 
     @Override
     public DailyHealthDataDto createDailyData(Long userId, DailyHealthDataRequest request) {
-        if (repository.findByUserIdAndDate(userId, request.getDate()).isPresent()) {
-            throw new BadRequestException("Daily health data already exists for this date.");
-        }
+        DailyHealthData data = repository.findByUserIdAndDate(userId, request.getDate())
+                .orElseGet(() -> DailyHealthData.builder()
+                        .userId(userId)
+                        .date(request.getDate())
+                        .build());
 
-        DailyHealthData data = DailyHealthData.builder()
-                .userId(userId)
-                .date(request.getDate())
-                .weight(request.getWeight())
-                .sleepHours(request.getSleepHours())
-                .steps(request.getSteps())
-                .waterIntake(request.getWaterIntake())
-                .exerciseMinutes(request.getExerciseMinutes())
-                .mood(request.getMood())
-                .build();
+        if (request.getWeight() != null) {
+            data.setWeight(request.getWeight());
+        }
+        if (request.getSleepHours() != null) {
+            data.setSleepHours(request.getSleepHours());
+        }
+        if (request.getSteps() != null) {
+            data.setSteps(request.getSteps());
+        }
+        if (request.getWaterIntake() != null) {
+            data.setWaterIntake(request.getWaterIntake());
+        }
+        if (request.getExerciseMinutes() != null) {
+            data.setExerciseMinutes(request.getExerciseMinutes());
+        }
+        if (request.getMood() != null) {
+            data.setMood(request.getMood());
+        }
 
         DailyHealthData saved = repository.save(data);
         return mapToDto(saved);

@@ -13,19 +13,31 @@ const HealthProfile = () => {
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
+    let isMounted = true;
     const fetchProfile = async () => {
+      if (!user) return;
       try {
-        if (!user) return;
+        setIsLoading(true);
         const data = await healthApi.getProfile(user.id);
-        setProfile(data);
+        if (isMounted) {
+          setProfile(data);
+          setErrorMsg('');
+        }
       } catch (err) {
-        setErrorMsg('Failed to load profile data.');
+        if (isMounted) {
+          setErrorMsg('Failed to load profile data.');
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
     fetchProfile();
-  }, []);
+    return () => {
+      isMounted = false;
+    };
+  }, [user]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;

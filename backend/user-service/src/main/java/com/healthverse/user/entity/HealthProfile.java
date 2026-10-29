@@ -45,6 +45,12 @@ public class HealthProfile {
     @Column(name = "sleep_pattern")
     private String sleepPattern;
 
+    @Column(name = "blood_group")
+    private String bloodGroup;
+
+    @Column(name = "current_medications", columnDefinition = "TEXT")
+    private String currentMedications;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

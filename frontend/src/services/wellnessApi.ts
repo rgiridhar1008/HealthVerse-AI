@@ -2,7 +2,7 @@ import api from './api';
 import { NutritionPlan, FitnessPlan, WellnessPlan } from '../types/wellness';
 
 export const wellnessApi = {
-  getNutritionPlan: async (): Promise<NutritionPlan> => {
+  getNutritionPlan: async (): Promise<NutritionPlan | null> => {
     try {
       const res = await api.get<any[]>('/api/nutrition/plans');
       let data = res.data && res.data.length > 0 ? res.data[0] : null;
@@ -29,7 +29,7 @@ export const wellnessApi = {
     return res.data;
   },
 
-  getFitnessPlan: async (): Promise<FitnessPlan> => {
+  getFitnessPlan: async (): Promise<FitnessPlan | null> => {
     try {
       const res = await api.get<any[]>('/api/fitness/plans');
       let data = res.data && res.data.length > 0 ? res.data[0] : null;
@@ -55,7 +55,7 @@ export const wellnessApi = {
     return res.data;
   },
 
-  getWellnessPlan: async (): Promise<WellnessPlan> => {
+  getWellnessPlan: async (): Promise<WellnessPlan | null> => {
     try {
       const res = await api.get<any[]>('/api/wellness/plans');
       let data = res.data && res.data.length > 0 ? res.data[0] : null;

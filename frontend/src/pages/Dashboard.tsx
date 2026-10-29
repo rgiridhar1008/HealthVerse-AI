@@ -1,13 +1,14 @@
 import { useAuth } from '../hooks/useAuth';
 import { motion } from 'framer-motion';
 import { 
-  Activity, Moon, Flame, Droplets, Scale, ActivitySquare, Bell, Sparkles, ArrowRight,
-  CheckCircle2, Circle, AlertCircle, ChevronRight, FileText, Loader2
+  Activity, Moon, Flame, Droplets, Scale, ActivitySquare, Sparkles, ArrowRight,
+  CheckCircle2, Circle, AlertCircle, ChevronRight, FileText, Loader2, Plus
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { twinApi } from '../services/twinApi';
 import { reportApi } from '../services/reportApi';
 import { TwinMetrics } from '../types/twin';
+import { LogVitalsModal } from '../components/LogVitalsModal';
 import { 
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area 
 } from 'recharts';
@@ -31,23 +32,25 @@ const Dashboard = () => {
   const [recentReports, setRecentReports] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isVitalsModalOpen, setIsVitalsModalOpen] = useState(false);
   
+  const fetchDashboardData = async () => {
+    try {
+      const [twinDataRes, reportsRes] = await Promise.all([
+        twinApi.getTwinStatus(),
+        reportApi.getAllReports()
+      ]);
+      setTwinData(twinDataRes);
+      setRecentReports(reportsRes.slice(0, 3)); // Only show latest 3
+    } catch (err) {
+      console.error('Failed to fetch dashboard data', err);
+      setError('Failed to load dashboard data.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchDashboardData = async () => {
-      try {
-        const [twinDataRes, reportsRes] = await Promise.all([
-          twinApi.getTwinStatus(),
-          reportApi.getAllReports()
-        ]);
-        setTwinData(twinDataRes);
-        setRecentReports(reportsRes.slice(0, 3)); // Only show latest 3
-      } catch (err) {
-        console.error('Failed to fetch dashboard data', err);
-        setError('Failed to load dashboard data.');
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchDashboardData();
   }, []);
 
@@ -79,6 +82,13 @@ const Dashboard = () => {
           <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Good morning, {user?.name.split(' ')[0] || 'User'}</h1>
           <p className="mt-1 text-slate-500">Here's your health overview for <span className="font-semibold text-slate-700">{today}</span>.</p>
         </div>
+        <button
+          onClick={() => setIsVitalsModalOpen(true)}
+          className="flex items-center gap-2 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-bold text-sm shadow-sm transition shrink-0"
+        >
+          <Plus className="w-4 h-4" />
+          Log Today's Vitals
+        </button>
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -231,8 +241,17 @@ const Dashboard = () => {
               <h3 className="text-lg font-bold text-slate-900">Activity vs Sleep Trend</h3>
             </div>
             {isInsufficient ? (
-              <div className="h-72 w-full flex items-center justify-center bg-slate-50 rounded-xl border border-slate-100">
-                <p className="text-slate-400 font-medium">Log 7 days of data to see your trends.</p>
+              <div className="h-72 w-full flex flex-col items-center justify-center bg-slate-50 rounded-xl border border-slate-100 p-6 text-center">
+                <Activity className="w-10 h-10 text-slate-300 mb-2" />
+                <p className="text-slate-600 font-semibold mb-1">No Recent Vitals Recorded</p>
+                <p className="text-slate-400 text-xs max-w-sm mb-4">Log your weight, sleep, steps, and water intake to generate real-time health trends.</p>
+                <button
+                  onClick={() => setIsVitalsModalOpen(true)}
+                  className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  Log Daily Vitals Now
+                </button>
               </div>
             ) : (
               <div className="h-72 w-full min-w-0 relative">
@@ -333,6 +352,13 @@ const Dashboard = () => {
 
         </div>
       </div>
+
+      {/* Log Daily Vitals Modal */}
+      <LogVitalsModal
+        isOpen={isVitalsModalOpen}
+        onClose={() => setIsVitalsModalOpen(false)}
+        onSuccess={fetchDashboardData}
+      />
     </motion.div>
   );
 };
