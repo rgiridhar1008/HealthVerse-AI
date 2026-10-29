@@ -3,7 +3,19 @@ import time
 import json
 
 base_url = 'http://localhost:8080'
-token = "eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiVVNFUiIsIm5hbWUiOiJUZXN0IFVzZXIiLCJ1c2VySWQiOjQsInN1YiI6InRlc3R1c2VyQGV4YW1wbGUuY29tIiwiaWF0IjoxNzkwMTkxMDQwLCJleHAiOjE3OTAyNzc0NDB9.gILVWAxKOz-BAUOLIoSZr-BD5Hj6-xiqeI3Fo_88DPGCFkW5MGECxLAIb2U_ki-R"
+
+# Dynamically authenticate to obtain a fresh token
+login_res = requests.post(f"{base_url}/api/auth/login", json={
+    "email": "rgiridhar@gmail.com",
+    "password": "giridhar@1234"
+})
+if login_res.status_code == 200:
+    token = login_res.json().get("accessToken")
+    print(f"Authenticated successfully as {login_res.json().get('user', {}).get('name')}")
+else:
+    print(f"Login failed: {login_res.status_code}")
+    token = ""
+
 headers = {'Authorization': f'Bearer {token}'}
 
 def test_wellness():
