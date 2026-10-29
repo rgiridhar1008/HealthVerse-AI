@@ -237,3 +237,4 @@ export const LogVitalsModal: React.FC<LogVitalsModalProps> = ({ isOpen, onClose,
     </div>
   );
 };
+

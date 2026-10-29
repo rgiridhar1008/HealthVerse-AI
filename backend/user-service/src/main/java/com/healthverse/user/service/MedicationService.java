@@ -11,3 +11,4 @@ public interface MedicationService {
     MedicationDto updateMedication(Long userId, Long medicationId, CreateMedicationRequest request);
     void deleteMedication(Long userId, Long medicationId);
 }
+

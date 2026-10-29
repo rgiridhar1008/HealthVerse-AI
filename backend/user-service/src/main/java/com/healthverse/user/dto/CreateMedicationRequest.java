@@ -30,3 +30,4 @@ public class CreateMedicationRequest {
     @Builder.Default
     private Boolean active = true;
 }
+

@@ -24,3 +24,4 @@ public class MedicationDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
+

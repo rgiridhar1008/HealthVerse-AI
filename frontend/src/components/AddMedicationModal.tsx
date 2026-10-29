@@ -178,3 +178,4 @@ export const AddMedicationModal: React.FC<AddMedicationModalProps> = ({ isOpen, 
     </div>
   );
 };
+

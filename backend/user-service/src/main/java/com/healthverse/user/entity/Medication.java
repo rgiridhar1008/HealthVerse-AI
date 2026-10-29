@@ -60,3 +60,4 @@ public class Medication {
         this.updatedAt = LocalDateTime.now();
     }
 }
+

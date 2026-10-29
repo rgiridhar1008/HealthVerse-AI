@@ -65,3 +65,4 @@ public class MedicationController {
         return ResponseEntity.noContent().build();
     }
 }
+
