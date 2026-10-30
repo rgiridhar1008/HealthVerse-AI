@@ -4,8 +4,9 @@ import { ComprehensiveTwin } from '../types/twin';
 import { motion } from 'framer-motion';
 import { 
   Accessibility, Loader2, Activity, Pill, Apple, ShieldCheck, AlertCircle,
-  BrainCircuit, Heart, Zap, Sparkles, History, FileText, ClipboardList
+  BrainCircuit, Heart, Zap, Sparkles, History, FileText, ClipboardList, Plus
 } from 'lucide-react';
+import { AddMedicationModal } from '../components/AddMedicationModal';
 import { 
   LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
@@ -24,19 +25,21 @@ const DigitalHealthTwin = () => {
   const [twin, setTwin] = useState<ComprehensiveTwin | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isMedModalOpen, setIsMedModalOpen] = useState(false);
+
+  const fetchTwinData = async () => {
+    try {
+      const data = await twinApi.getComprehensiveTwin();
+      setTwin(data);
+    } catch (err: any) {
+      console.error('Failed to fetch comprehensive twin data:', err);
+      setError(err.response?.data?.message || 'Failed to connect to the Digital Twin service.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchTwinData = async () => {
-      try {
-        const data = await twinApi.getComprehensiveTwin();
-        setTwin(data);
-      } catch (err: any) {
-        console.error('Failed to fetch comprehensive twin data:', err);
-        setError(err.response?.data?.message || 'Failed to connect to the Digital Twin service.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
     fetchTwinData();
   }, []);
 
@@ -127,17 +130,28 @@ const DigitalHealthTwin = () => {
                 </div>
                 
                 <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                    <h3 className="font-bold text-slate-700 mb-2 flex items-center gap-2"><Pill className="w-4 h-4"/> Medications ({twin.medications.length})</h3>
+                    <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-bold text-slate-700 flex items-center gap-2"><Pill className="w-4 h-4"/> Medications ({twin.medications.length})</h3>
+                        <button 
+                            onClick={() => setIsMedModalOpen(true)}
+                            className="px-2 py-0.5 text-xs font-bold bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg flex items-center gap-1 transition"
+                        >
+                            <Plus className="w-3 h-3" /> Add
+                        </button>
+                    </div>
                     {twin.medications.length > 0 ? (
                         <ul className="text-sm space-y-2 max-h-32 overflow-y-auto">
                             {twin.medications.map((m, i) => (
-                                <li key={i} className="flex justify-between text-slate-600">
-                                    <span className="truncate pr-2">{m.name}</span>
-                                    <span className="text-xs shrink-0">{m.dosage}</span>
+                                <li key={i} className="flex justify-between items-center text-slate-600 bg-white px-2.5 py-1.5 rounded-lg border border-slate-100">
+                                    <div className="truncate pr-2">
+                                        <p className="font-semibold text-slate-800 text-xs">{m.name}</p>
+                                        <p className="text-[10px] text-slate-400">{m.frequency || m.timeOfDay || 'Active'}</p>
+                                    </div>
+                                    <span className="text-xs shrink-0 font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">{m.dosage || 'Active'}</span>
                                 </li>
                             ))}
                         </ul>
-                    ) : <p className="text-sm text-slate-400 italic">No data recorded.</p>}
+                    ) : <p className="text-sm text-slate-400 italic">No medications recorded.</p>}
                 </div>
 
                 <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
@@ -172,43 +186,119 @@ const DigitalHealthTwin = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <motion.div variants={item} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-          <h3 className="font-bold text-slate-900 text-sm uppercase tracking-widest mb-4 flex items-center gap-2"><Apple className="w-4 h-4"/> Nutrition</h3>
-          {twin.nutrition ? (
-              <div className="text-sm text-slate-600 space-y-2">
-                  <p><strong>Goal:</strong> {twin.nutrition.primaryGoal}</p>
-                  <p><strong>Calories:</strong> {twin.nutrition.dailyCalories} kcal</p>
-                  <p className="truncate"><strong>Advice:</strong> {twin.nutrition.dietaryAdvice}</p>
+        {/* Nutrition Card */}
+        <motion.div variants={item} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-bold text-slate-900 text-xs uppercase tracking-widest flex items-center gap-2">
+                <Apple className="w-4 h-4 text-orange-500"/> Nutrition
+              </h3>
+              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                twin.nutrition ? 'bg-orange-50 text-orange-700 border border-orange-100' : 'bg-slate-100 text-slate-600'
+              }`}>
+                {twin.nutrition ? 'AI Plan Active' : twin.healthProfile?.dietaryPreference ? 'Profile Preferences' : 'Not Configured'}
+              </span>
+            </div>
+
+            {twin.nutrition || twin.healthProfile ? (
+              <div className="text-sm text-slate-600 space-y-2.5">
+                <p>
+                  <strong className="text-slate-800">Dietary Pattern:</strong>{' '}
+                  <span className="text-slate-700 font-medium">{twin.nutrition?.dietType || twin.healthProfile?.dietaryPreference || 'Standard Balanced'}</span>
+                </p>
+                <p>
+                  <strong className="text-slate-800">Daily Target:</strong>{' '}
+                  <span className="text-slate-700 font-medium">
+                    {twin.nutrition?.dailyCalories 
+                      ? `${twin.nutrition.dailyCalories} kcal (${twin.nutrition.proteinGrams || 0}g protein)` 
+                      : (twin.healthProfile?.goals ? `${twin.healthProfile.goals} (Goal)` : 'Calculate in Nutrition')}
+                  </span>
+                </p>
+                <p>
+                  <strong className="text-slate-800">Allergies:</strong>{' '}
+                  <span className="text-slate-700 font-medium">{twin.nutrition?.allergyRestrictions || twin.healthProfile?.allergies || 'None recorded'}</span>
+                </p>
               </div>
-          ) : (
-              <p className="text-sm text-slate-400 italic">No data recorded.</p>
-          )}
+            ) : (
+              <p className="text-sm text-slate-400 italic">No nutrition profile or plan recorded yet.</p>
+            )}
+          </div>
         </motion.div>
 
-        <motion.div variants={item} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-          <h3 className="font-bold text-slate-900 text-sm uppercase tracking-widest mb-4 flex items-center gap-2"><Zap className="w-4 h-4"/> Fitness</h3>
-          {twin.fitness ? (
-              <div className="text-sm text-slate-600 space-y-2">
-                  <p><strong>Goal:</strong> {twin.fitness.primaryGoal}</p>
-                  <p><strong>Focus:</strong> {twin.fitness.focusArea}</p>
-                  <p><strong>Level:</strong> {twin.fitness.fitnessLevel}</p>
+        {/* Fitness Card */}
+        <motion.div variants={item} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-bold text-slate-900 text-xs uppercase tracking-widest flex items-center gap-2">
+                <Zap className="w-4 h-4 text-emerald-500"/> Fitness
+              </h3>
+              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                twin.fitness ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-slate-100 text-slate-600'
+              }`}>
+                {twin.fitness ? 'AI Plan Active' : twin.healthProfile?.lifestyle ? 'Profile Preferences' : 'Not Configured'}
+              </span>
+            </div>
+
+            {twin.fitness || twin.healthProfile ? (
+              <div className="text-sm text-slate-600 space-y-2.5">
+                <p>
+                  <strong className="text-slate-800">Primary Goal:</strong>{' '}
+                  <span className="text-slate-700 font-medium">{twin.fitness?.goal || twin.healthProfile?.goals || 'General Fitness'}</span>
+                </p>
+                <p>
+                  <strong className="text-slate-800">Frequency & Focus:</strong>{' '}
+                  <span className="text-slate-700 font-medium">
+                    {twin.fitness?.weeklyFrequency 
+                      ? `${twin.fitness.weeklyFrequency} days/wk (${twin.fitness.sessionDurationMinutes || 45} mins)` 
+                      : (twin.healthProfile?.lifestyle || 'Moderate Conditioning')}
+                  </span>
+                </p>
+                <p>
+                  <strong className="text-slate-800">Conditioning Level:</strong>{' '}
+                  <span className="text-slate-700 font-medium">{twin.fitness?.fitnessLevel || twin.healthProfile?.lifestyle || 'Beginner / Moderate'}</span>
+                </p>
               </div>
-          ) : (
-              <p className="text-sm text-slate-400 italic">No data recorded.</p>
-          )}
+            ) : (
+              <p className="text-sm text-slate-400 italic">No fitness profile or plan recorded yet.</p>
+            )}
+          </div>
         </motion.div>
 
-        <motion.div variants={item} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-          <h3 className="font-bold text-slate-900 text-sm uppercase tracking-widest mb-4 flex items-center gap-2"><BrainCircuit className="w-4 h-4"/> Wellness</h3>
-          {twin.wellness ? (
-              <div className="text-sm text-slate-600 space-y-2">
-                  <p><strong>Goal:</strong> {twin.wellness.primaryGoal}</p>
-                  <p><strong>Stress Level:</strong> {twin.wellness.stressLevel}</p>
-                  <p className="truncate"><strong>Focus:</strong> {twin.wellness.mentalFocus}</p>
+        {/* Wellness Card */}
+        <motion.div variants={item} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-bold text-slate-900 text-xs uppercase tracking-widest flex items-center gap-2">
+                <BrainCircuit className="w-4 h-4 text-indigo-500"/> Wellness
+              </h3>
+              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                twin.wellness ? 'bg-indigo-50 text-indigo-700 border border-indigo-100' : 'bg-slate-100 text-slate-600'
+              }`}>
+                {twin.wellness ? 'AI Plan Active' : twin.healthProfile?.sleepPattern ? 'Profile Preferences' : 'Not Configured'}
+              </span>
+            </div>
+
+            {twin.wellness || twin.healthProfile ? (
+              <div className="text-sm text-slate-600 space-y-2.5">
+                <p>
+                  <strong className="text-slate-800">Wellness Goal:</strong>{' '}
+                  <span className="text-slate-700 font-medium">{twin.wellness?.goal || twin.healthProfile?.goals || 'Restorative Balance & Recovery'}</span>
+                </p>
+                <p>
+                  <strong className="text-slate-800">Mindfulness Practice:</strong>{' '}
+                  <span className="text-slate-700 font-medium">
+                    {twin.wellness?.title || (twin.wellness?.dailyMinutes ? `${twin.wellness.dailyMinutes} mins daily practice` : 'Box Breathing & Sleep Hygiene')}
+                  </span>
+                </p>
+                <p>
+                  <strong className="text-slate-800">Sleep Pattern:</strong>{' '}
+                  <span className="text-slate-700 font-medium">{twin.healthProfile?.sleepPattern || '7-8 hours (Target)'}</span>
+                </p>
               </div>
-          ) : (
-              <p className="text-sm text-slate-400 italic">No data recorded.</p>
-          )}
+            ) : (
+              <p className="text-sm text-slate-400 italic">No wellness profile or plan recorded yet.</p>
+            )}
+          </div>
         </motion.div>
       </div>
 
@@ -295,6 +385,11 @@ const DigitalHealthTwin = () => {
         </motion.div>
       </div>
 
+      <AddMedicationModal
+        isOpen={isMedModalOpen}
+        onClose={() => setIsMedModalOpen(false)}
+        onSuccess={fetchTwinData}
+      />
     </motion.div>
   );
 };

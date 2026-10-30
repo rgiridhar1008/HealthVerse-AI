@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { aiApi } from '../services/aiApi';
+import { healthApi } from '../services/healthApi';
+import { useAuth } from '../hooks/useAuth';
+import { HealthProfile } from '../types/health';
 import { SymptomAnalysisResponse } from '../types/ai';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ActivitySquare, Loader2, AlertCircle, CheckCircle2, 
-  AlertTriangle, Lightbulb, Activity, ChevronRight
+  AlertTriangle, Lightbulb, Activity, ChevronRight, User
 } from 'lucide-react';
 
 const SymptomAnalyzer = () => {
+  const { user } = useAuth();
+  const [profile, setProfile] = useState<HealthProfile | null>(null);
   const [symptoms, setSymptoms] = useState('');
   const [duration, setDuration] = useState('');
   const [severity, setSeverity] = useState<'Mild' | 'Moderate' | 'Severe' | ''>('');
@@ -15,6 +20,19 @@ const SymptomAnalyzer = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState('');
   const [result, setResult] = useState<SymptomAnalysisResponse | null>(null);
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        if (!user) return;
+        const data = await healthApi.getProfile();
+        setProfile(data);
+      } catch (err) {
+        console.warn('Could not load health profile for symptom context', err);
+      }
+    };
+    loadProfile();
+  }, [user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,21 +42,33 @@ const SymptomAnalyzer = () => {
     setIsAnalyzing(true);
     setResult(null);
 
+    const allergiesList = profile?.allergies 
+      ? profile.allergies.split(',').map(s => s.trim()).filter(Boolean) 
+      : [];
+    const conditionsList = profile?.chronicConditions 
+      ? profile.chronicConditions.split(',').map(s => s.trim()).filter(Boolean) 
+      : [];
+
     try {
       const response = await aiApi.analyzeSymptoms({
         symptoms,
         duration,
         severity: (severity as 'Mild' | 'Moderate' | 'Severe' | undefined),
+        age: profile?.age ? Number(profile.age) : 25,
+        weight: profile?.weight ? Number(profile.weight) : 70,
+        height: profile?.height ? Number(profile.height) : 175,
+        allergies: allergiesList,
+        chronic_conditions: conditionsList,
       });
       setResult(response);
     } catch (err: any) {
       let errorText = 'An error occurred while analyzing your symptoms. Please try again later.';
       if (err.response?.status === 504 || err.response?.status === 502) {
-        errorText = "Local AI service unavailable or timed out. Please check if Ollama is running.";
+        errorText = "AI analysis service is currently unavailable or timed out. Please try again shortly.";
       } else if (err.response?.data?.detail) {
         errorText = `AI Service Error: ${err.response.data.detail}`;
       } else if (err.message && err.message.toLowerCase().includes('timeout')) {
-        errorText = "Request timed out waiting for local AI. It might be starting up.";
+        errorText = "Request timed out waiting for AI analysis. Please try again.";
       }
       setError(errorText);
     } finally {
@@ -103,6 +133,18 @@ const SymptomAnalyzer = () => {
             <div className="p-6 border-b border-slate-100 bg-slate-50">
               <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest">Describe Symptoms</h3>
             </div>
+
+            {profile && profile.age && (
+              <div className="mx-6 mt-4 p-3 bg-primary-50 rounded-xl border border-primary-100 flex items-center justify-between text-xs text-primary-900">
+                <div className="flex items-center gap-2">
+                  <User className="w-4 h-4 text-primary-600 shrink-0" />
+                  <span><strong>Patient Context:</strong> Age {profile.age} &bull; {profile.gender || 'Not specified'} &bull; {profile.weight ? `${profile.weight} kg` : ''}</span>
+                </div>
+                {profile.allergies && profile.allergies !== 'None' && (
+                  <span className="bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-medium">Allergies: {profile.allergies}</span>
+                )}
+              </div>
+            )}
             
             <form onSubmit={handleSubmit} className="p-6 space-y-6">
               <div>
@@ -157,7 +199,7 @@ const SymptomAnalyzer = () => {
                 {isAnalyzing ? (
                   <>
                     <Loader2 className="animate-spin h-5 w-5 mr-2" />
-                    Analyzing with local AI...
+                    AI is analyzing symptoms...
                   </>
                 ) : (
                   <>
@@ -194,8 +236,8 @@ const SymptomAnalyzer = () => {
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary-100 rounded-full blur-3xl opacity-50 animate-pulse" />
                   <div className="relative z-10 flex flex-col items-center">
                     <Loader2 className="h-12 w-12 text-primary-600 animate-spin mb-6" />
-                    <h3 className="text-xl font-bold text-slate-900 mb-2">Analyzing with local AI...</h3>
-                    <p className="max-w-xs text-sm text-slate-500">Our local model is processing your symptoms securely.</p>
+                    <h3 className="text-xl font-bold text-slate-900 mb-2">AI is analyzing your symptoms...</h3>
+                    <p className="max-w-xs text-sm text-slate-500">Reviewing your symptoms and available health information.</p>
                   </div>
                 </div>
               )}

@@ -13,7 +13,7 @@ load_dotenv(dotenv_path=ENV_PATH)
 class Settings(BaseSettings):
     AI_PROVIDER: str = "ollama"
     OLLAMA_BASE_URL: str = "http://host.docker.internal:11434"
-    OLLAMA_MODEL: str = "qwen2.5:7b"
+    OLLAMA_MODEL: str = os.getenv("OLLAMA_MODEL", "qwen2.5:3b")
     PORT: int = 8000
     HOST: str = "0.0.0.0"
 

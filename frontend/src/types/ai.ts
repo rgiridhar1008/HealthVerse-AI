@@ -2,6 +2,11 @@ export interface SymptomPayload {
   symptoms: string;
   duration?: string;
   severity?: 'Mild' | 'Moderate' | 'Severe';
+  age?: number;
+  weight?: number;
+  height?: number;
+  allergies?: string[];
+  chronic_conditions?: string[];
 }
 
 export interface SymptomAnalysisResponse {

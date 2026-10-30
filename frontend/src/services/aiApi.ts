@@ -16,11 +16,11 @@ export const aiApi = {
         symptoms: payload.symptoms,
         duration: payload.duration || '',
         severity: payload.severity || 'Mild',
-        age: 25,
-        weight: 70,
-        height: 175,
-        allergies: [],
-        chronic_conditions: []
+        age: payload.age ?? 25,
+        weight: payload.weight ?? 70,
+        height: payload.height ?? 175,
+        allergies: payload.allergies ?? [],
+        chronic_conditions: payload.chronic_conditions ?? []
       },
       { timeout: 180000 } // 180s for Ollama generation
     );

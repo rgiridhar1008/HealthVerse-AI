@@ -69,6 +69,7 @@ public class AnalysisServiceImpl implements AnalysisService {
         analysis.setReportId(reportId);
         analysis.setUserId(userId);
         analysis.setAnalysisStatus(AnalysisStatus.PENDING);
+        analysis.setCurrentStage("EXTRACTING_TEXT");
         analysis.setCreatedAt(LocalDateTime.now());
         analysis.setUpdatedAt(LocalDateTime.now());
         AnalysisReport saved = analysisRepository.save(analysis);
@@ -83,6 +84,7 @@ public class AnalysisServiceImpl implements AnalysisService {
                 .orElseThrow(() -> new ResourceNotFoundException("No existing analysis found to reanalyze"));
         
         existing.setAnalysisStatus(AnalysisStatus.PENDING);
+        existing.setCurrentStage("EXTRACTING_TEXT");
         existing.setUpdatedAt(LocalDateTime.now());
         AnalysisReport saved = analysisRepository.save(existing);
         
@@ -108,6 +110,10 @@ public class AnalysisServiceImpl implements AnalysisService {
             MedicalReport report = medicalReportRepository.findByIdAndUserId(reportId, userId)
                     .orElseThrow(() -> new ResourceNotFoundException("Medical report not found or unauthorized"));
 
+            analysis.setCurrentStage("EXTRACTING_TEXT");
+            analysis.setUpdatedAt(LocalDateTime.now());
+            analysisRepository.save(analysis);
+
             String extractedText = "No text extracted.";
             
             long gridfsStart = System.currentTimeMillis();
@@ -119,11 +125,24 @@ public class AnalysisServiceImpl implements AnalysisService {
             long pdfEnd = System.currentTimeMillis();
             System.out.println("[REPORT-TIMING] gridfs-and-pdf-extraction=" + (pdfEnd - gridfsStart) + "ms");
 
+            analysis.setCurrentStage("IDENTIFYING_BIOMARKERS");
+            analysis.setUpdatedAt(LocalDateTime.now());
+            analysisRepository.save(analysis);
+
+            analysis.setCurrentStage("GENERATING_CLINICAL_INSIGHTS");
+            analysis.setUpdatedAt(LocalDateTime.now());
+            analysisRepository.save(analysis);
+
             long aiStart = System.currentTimeMillis();
             callExternalAiAnalysis(analysis, report, extractedText);
             long aiEnd = System.currentTimeMillis();
             System.out.println("[REPORT-TIMING] ai-agent-request=" + (aiEnd - aiStart) + "ms");
             
+            analysis.setCurrentStage("PREPARING_REPORT");
+            analysis.setAnalysisStatus(AnalysisStatus.COMPLETED);
+            analysis.setCurrentStage("COMPLETED");
+            analysis.setUpdatedAt(LocalDateTime.now());
+
             long saveStart = System.currentTimeMillis();
             analysisRepository.save(analysis);
             long saveEnd = System.currentTimeMillis();
@@ -133,7 +152,9 @@ public class AnalysisServiceImpl implements AnalysisService {
             e.printStackTrace();
             System.err.println("[AI-ERROR] processAnalysis exception: " + e.getMessage());
             analysis.setAnalysisStatus(AnalysisStatus.FAILED);
+            analysis.setCurrentStage("FAILED");
             analysis.setSummary("Failed to process analysis: " + e.getMessage());
+            analysis.setUpdatedAt(LocalDateTime.now());
             analysisRepository.save(analysis);
         }
     }

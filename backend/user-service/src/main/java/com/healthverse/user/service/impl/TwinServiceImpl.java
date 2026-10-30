@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -31,6 +32,7 @@ public class TwinServiceImpl implements TwinService {
 
     private final HealthProfileRepository healthProfileRepository;
     private final DailyHealthDataRepository dailyHealthDataRepository;
+    private final com.healthverse.user.repository.MedicationRepository medicationRepository;
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
 
@@ -147,6 +149,37 @@ public class TwinServiceImpl implements TwinService {
             if (lastSleep > firstSleep) sleepTrendString = "Improving";
             else if (lastSleep < firstSleep) sleepTrendString = "Decreasing";
             else sleepTrendString = "Stable";
+        } else if (last7Days.size() == 1) {
+            weightTrendString = "Recorded today";
+            activityTrendString = "Baseline logged";
+            sleepTrendString = "Recorded";
+        }
+
+        // Populate real journey events from user vitals, medications, and profile
+        for (DailyHealthData d : history.stream().limit(5).collect(Collectors.toList())) {
+            journeyEvents.add(DigitalHealthTwinDto.JourneyEventDto.builder()
+                    .date(d.getDate().toString())
+                    .event("Daily Vitals Logged: " + (d.getSteps() != null ? d.getSteps() : 0) + " steps, " + (d.getSleepHours() != null ? d.getSleepHours() : 0) + "h sleep (" + (d.getMood() != null ? d.getMood() : "Good") + ")")
+                    .type("positive")
+                    .build());
+        }
+
+        List<com.healthverse.user.entity.Medication> activeMeds = medicationRepository.findByUserIdAndActiveTrueOrderByCreatedAtDesc(userId);
+        for (com.healthverse.user.entity.Medication m : activeMeds.stream().limit(3).collect(Collectors.toList())) {
+            journeyEvents.add(DigitalHealthTwinDto.JourneyEventDto.builder()
+                    .date(m.getStartDate() != null ? m.getStartDate().toString() : LocalDate.now().toString())
+                    .event("Medication Active: " + m.getName() + " " + (m.getDosage() != null ? m.getDosage() : "") + " (" + (m.getFrequency() != null ? m.getFrequency() : "") + ")")
+                    .type("info")
+                    .build());
+        }
+
+        if (profileOpt.isPresent()) {
+            HealthProfile p = profileOpt.get();
+            journeyEvents.add(DigitalHealthTwinDto.JourneyEventDto.builder()
+                    .date(p.getUpdatedAt() != null ? p.getUpdatedAt().toLocalDate().toString() : LocalDate.now().toString())
+                    .event("Health Profile Configured (" + (p.getDietaryPreference() != null ? p.getDietaryPreference() : "Standard") + " | " + (p.getGoals() != null ? p.getGoals() : "Wellness") + ")")
+                    .type("success")
+                    .build());
         }
         
         energyScore = (physical + sleepScore) / 2;
@@ -188,8 +221,14 @@ public class TwinServiceImpl implements TwinService {
         int nutrition = 0;
         int focus = 0;
         
+        List<DigitalHealthTwinDto.JourneyEventDto> emptyJourneyEvents = new ArrayList<>();
         if (profileOpt.isPresent()) {
             HealthProfile profile = profileOpt.get();
+            emptyJourneyEvents.add(DigitalHealthTwinDto.JourneyEventDto.builder()
+                    .date(profile.getUpdatedAt() != null ? profile.getUpdatedAt().toLocalDate().toString() : LocalDate.now().toString())
+                    .event("Health Profile Configured (" + (profile.getDietaryPreference() != null ? profile.getDietaryPreference() : "Standard") + ")")
+                    .type("success")
+                    .build());
             // We have a health profile but no daily data — show baseline from profile only
             double height = profile.getHeight() != null ? profile.getHeight() / 100.0 : 0;
             double weight = profile.getWeight() != null ? profile.getWeight() : 0;
@@ -235,7 +274,7 @@ public class TwinServiceImpl implements TwinService {
                 .overallWellnessScore(0)
                 .status(status)
                 .radarData(radarData)
-                .journeyEvents(Collections.emptyList())
+                .journeyEvents(emptyJourneyEvents)
                 .weightTrendString("No data")
                 .activityTrendString("No data")
                 .sleepTrendString("No data")
@@ -351,8 +390,28 @@ public class TwinServiceImpl implements TwinService {
             else { missing.add("Medical Reports"); }
         } catch (Exception e) { dto.setMedicalReports(new ArrayList<>()); missing.add("Medical Reports"); }
 
-        // Medications (Service Removed)
-        dto.setMedications(new ArrayList<>());
+        // Medications
+        List<com.healthverse.user.entity.Medication> meds = medicationRepository.findByUserIdAndActiveTrueOrderByCreatedAtDesc(userId);
+        if (!meds.isEmpty()) {
+            List<Map<String, Object>> medsData = meds.stream().map(m -> {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", m.getId());
+                map.put("name", m.getName());
+                map.put("dosage", m.getDosage());
+                map.put("frequency", m.getFrequency());
+                map.put("timeOfDay", m.getTimeOfDay());
+                map.put("startDate", m.getStartDate());
+                map.put("instructions", m.getInstructions());
+                map.put("active", m.getActive());
+                return map;
+            }).collect(Collectors.toList());
+            dto.setMedications(medsData);
+            available.add("Medications");
+            filledCategories++;
+        } else {
+            dto.setMedications(new ArrayList<>());
+            missing.add("Medications");
+        }
         // Symptoms
         try {
             ResponseEntity<List<Map<String, Object>>> symptomsResponse = restTemplate.exchange(

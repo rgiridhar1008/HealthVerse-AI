@@ -25,6 +25,7 @@ public class AnalysisReport {
     private Long userId;
     
     private AnalysisStatus analysisStatus;
+    private String currentStage;
     
     private String summary;
     

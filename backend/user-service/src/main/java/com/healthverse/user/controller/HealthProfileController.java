@@ -18,6 +18,17 @@ public class HealthProfileController {
         this.healthProfileService = healthProfileService;
     }
 
+    @GetMapping("/profile")
+    public ResponseEntity<HealthProfileDto> getMyHealthProfile(Authentication authentication) {
+        String email = authentication.getName();
+        Long tokenUserId = extractUserIdFromAuth(authentication);
+        if (tokenUserId == null) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.UNAUTHORIZED).build();
+        }
+        HealthProfileDto profile = healthProfileService.getHealthProfile(email, tokenUserId);
+        return ResponseEntity.ok(profile);
+    }
+
     @GetMapping("/profile/{userId}")
     public ResponseEntity<HealthProfileDto> getHealthProfile(
             @PathVariable Long userId,

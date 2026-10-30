@@ -24,6 +24,8 @@ public class HealthProfileDto {
     private String conditions;
     private String dietaryPreference;
     private String sleepPattern;
+    private String bloodGroup;
+    private String currentMedications;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

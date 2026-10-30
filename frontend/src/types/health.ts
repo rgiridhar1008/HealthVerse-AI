@@ -28,3 +28,39 @@ export const defaultHealthProfile: HealthProfile = {
   sleepPattern: '',
   dietaryPreference: '',
 };
+
+export interface DailyHealthData {
+  id?: number;
+  userId?: number;
+  date: string;
+  weight: number;
+  sleepHours: number;
+  steps: number;
+  waterIntake: number;
+  exerciseMinutes: number;
+  mood: string;
+}
+
+export interface DailyHealthDataPayload {
+  date: string;
+  weight?: number;
+  sleepHours?: number;
+  steps?: number;
+  waterIntake?: number;
+  exerciseMinutes?: number;
+  mood?: string;
+}
+
+export interface MedicationItem {
+  id?: number;
+  userId?: number;
+  name: string;
+  dosage?: string;
+  frequency?: string;
+  timeOfDay?: string;
+  startDate?: string;
+  endDate?: string;
+  instructions?: string;
+  active?: boolean;
+}
+

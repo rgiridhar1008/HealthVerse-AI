@@ -5,7 +5,7 @@ export interface TwinMetrics {
   medicationAdherence: number; // percentage 0-100
   overallWellnessScore: number; // percentage 0-100
   status: 'optimal' | 'improving' | 'needs_attention' | 'insufficient data' | string;
-  radarData: { subject: string; A: number; fullMark: number }[];
+  radarData: { subject: string; A?: number; a?: number; score?: number; fullMark: number }[];
   journeyEvents: { date: string; event: string; type: 'positive' | 'warning' | 'info' | 'success' | string }[];
   
   // AI Generated Insights

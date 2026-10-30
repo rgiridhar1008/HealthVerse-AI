@@ -36,8 +36,12 @@ class AIProvider:
         feature: str = "general"
     ) -> str:
         """
-        Generate text completion via Ollama HTTP API.
+        Generate text completion via Ollama HTTP API or Mock provider for tests.
         """
+        if self.provider == "mock":
+            print(f"[AI-AGENT-MOCK] Generating mock response for feature={feature}")
+            return f"[TEST MOCK MODE] AI analysis result for {feature}."
+
         print(f"[AI-AGENT] Using provider={self.provider}")
         print(f"[AI-AGENT] Using model={self.model} feature={feature}")
         print(f"[AI-AGENT] Calling Ollama at {self.base_url}...")
@@ -98,9 +102,69 @@ class AIProvider:
         feature: str = "json"
     ) -> Dict[str, Any]:
         """
-        Generate structured JSON output via Ollama.
+        Generate structured JSON output via Ollama or Mock provider for tests.
         Enforces format="json" and cleans up markdown wrappers.
         """
+        if self.provider == "mock":
+            print(f"[AI-AGENT-MOCK] Generating mock structured JSON for feature={feature}")
+            if feature == "report":
+                return {
+                    "summary": "[MOCK TEST MODE] Blood profile shows healthy biomarker baseline.",
+                    "findings": [
+                        {"name": "Hemoglobin", "value": "14.2 g/dL", "status": "normal", "description": "Normal oxygen carrier"},
+                        {"name": "Total Cholesterol", "value": "210 mg/dL", "status": "attention", "description": "Borderline elevation"}
+                    ],
+                    "abnormal_values": [
+                        {"marker": "Total Cholesterol", "value": "210 mg/dL", "referenceRange": "< 200 mg/dL", "status": "HIGH", "explanation": "Slightly elevated lipid level"}
+                    ],
+                    "normal_values": ["Hemoglobin 14.2 g/dL", "Fasting Blood Sugar 92 mg/dL"],
+                    "explanations": "[MOCK TEST MODE] Biomarkers indicate overall stability with minor lipid optimization recommended.",
+                    "recommendations": ["Engage in 30 minutes of aerobic exercise daily.", "Increase soluble dietary fiber intake."],
+                    "disclaimer": "This analysis is for informational purposes only. Consult a healthcare professional."
+                }
+            elif feature == "symptom":
+                return {
+                    "insights": "[MOCK TEST MODE] Mild fatigue observed. Hydration and rest suggested.",
+                    "recommendations": ["Drink 2.5L water daily", "Aim for 8 hours of sleep"],
+                    "seekProfessionalCare": False
+                }
+            elif feature == "diet":
+                return {
+                    "meal_suggestions": [
+                        "Breakfast: 2 Steamed Ragi Idlis or Moong Dal Chilla with vegetable sambar, mint chutney, and 1 boiled egg (or 50g paneer bhurji) (approx. 380 kcal)",
+                        "Lunch: 2 Phulkas (multigrain roti) with 1 bowl Tadka Dal, 1 bowl Palak Sabzi, cucumber-curd raita, and grilled chicken breast or tofu (approx. 550 kcal)",
+                        "Snacks: 1 bowl Sprouted Moong Chaat with lemon & chaat masala, or roasted makhana & roasted chana (approx. 180 kcal)",
+                        "Dinner: 1 cup Brown Rice or Millets with Rajma / Chhole curry or Fish curry, steamed green beans poriyal, and sliced tomato salad (approx. 490 kcal)"
+                    ],
+                    "hydration_guidance": "Drink 2.5 - 3 Liters of water daily. Include spiced chaas (buttermilk with roasted jeera & mint) or warm jeera water between meals for optimal digestion.",
+                    "practical_recommendations": [
+                        "Use cold-pressed mustard, sesame, or moderate cow's ghee instead of refined oils.",
+                        "Prioritize high-protein Indian staples: sprouts, paneer, lentils, curd, and lean eggs/chicken.",
+                        "Limit deep-fried evening snacks; replace with roasted makhana, boiled peanuts, or chana sundal.",
+                        "Finish dinner at least 2 hours before bedtime to support circadian digestive health."
+                    ]
+                }
+            elif feature == "fitness":
+                return {
+                    "weeklyRoutine": [
+                        {"day": "Monday", "focus": "Cardio & Core", "duration": "40 mins"},
+                        {"day": "Wednesday", "focus": "Strength & Mobility", "duration": "45 mins"},
+                        {"day": "Friday", "focus": "Full Body Circuit", "duration": "40 mins"}
+                    ],
+                    "dailyStepTarget": 8500
+                }
+            elif feature == "wellness":
+                return {
+                    "area": "Stress & Circadian Rhythm",
+                    "trend": "Positive",
+                    "reason": "[MOCK TEST MODE] Rest cycles and activity patterns are well synchronized.",
+                    "recommendation": "Maintain regular bedtime schedules.",
+                    "confidence": "High",
+                    "contributing_factors": ["Adequate daily hydration", "Consistent rest intervals"],
+                    "evidence": ["Sleep duration within 7-8 hours range"]
+                }
+            return {"status": "ok", "mode": "mock", "feature": feature}
+
         print(f"[AI-AGENT] Using provider={self.provider}")
         print(f"[AI-AGENT] Using model={self.model} (format=json) feature={feature}")
         print(f"[AI-AGENT] Calling Ollama at {self.base_url}...")
@@ -164,8 +228,11 @@ class AIProvider:
         temperature: float = 0.7
     ) -> str:
         """
-        Chat completion using Ollama's chat API.
+        Chat completion using Ollama's chat API or Mock provider for tests.
         """
+        if self.provider == "mock":
+            return "[TEST MOCK MODE] Hello! I am your HealthVerse AI wellness assistant. How can I help you with your health goals today?"
+
         print(f"[AI-AGENT] Chat call using provider={self.provider}, model={self.model}")
         url = f"{self.base_url}/api/chat"
         payload = {

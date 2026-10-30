@@ -92,6 +92,9 @@ public class NutritionService {
             if (profile.getAllergies() != null && !profile.getAllergies().isBlank()) {
                 aiRequest.setAllergies(java.util.List.of(profile.getAllergies().split("\\s*,\\s*")));
             }
+            if (profile.getDietaryPreference() != null && !profile.getDietaryPreference().isBlank()) {
+                aiRequest.setDietary_preference(profile.getDietaryPreference());
+            }
             if (request.getAdditionalPreferences() != null) {
                 aiRequest.setAdditional_preferences(request.getAdditionalPreferences());
             }
@@ -122,7 +125,17 @@ public class NutritionService {
 
             if (aiResponse.statusCode() >= 200 && aiResponse.statusCode() < 300 && aiResponse.body() != null) {
                 DietGenerateResponse res = mapper.readValue(aiResponse.body(), DietGenerateResponse.class);
-                mealPlan = String.join("\n", res.getMeal_suggestions()) + "\n\n" + res.getHydration_guidance();
+                StringBuilder sb = new StringBuilder();
+                if (res.getMeal_suggestions() != null) {
+                    sb.append(String.join("\n", res.getMeal_suggestions()));
+                }
+                if (res.getHydration_guidance() != null && !res.getHydration_guidance().isBlank()) {
+                    sb.append("\n\nHydration: ").append(res.getHydration_guidance());
+                }
+                if (res.getPractical_recommendations() != null && !res.getPractical_recommendations().isEmpty()) {
+                    sb.append("\n\nRecommendations:\n").append(String.join("\n", res.getPractical_recommendations()));
+                }
+                mealPlan = sb.toString();
                 System.out.println("[NUTRITION] response parsed");
             } else {
                 throw new BadRequestException("AI Agent Service returned an error.");
@@ -137,12 +150,55 @@ public class NutritionService {
             throw new BadRequestException("Error connecting to AI Agent Service: " + e.getMessage());
         }
 
-        // Basic Macros
-        int baseCalories = 2000;
-        int proteinGrams = 150;
-        int fatGrams = 60;
-        int carbsGrams = 200;
-        double waterLiters = 2.5;
+        // Deterministic Mifflin-St Jeor BMR & TDEE calculation
+        double weight = (profile.getWeight() != null && profile.getWeight() > 20) ? profile.getWeight() : 70.0;
+        double height = (profile.getHeight() != null && profile.getHeight() > 100) ? profile.getHeight() : 170.0;
+        int age = (profile.getAge() != null && profile.getAge() > 10) ? profile.getAge() : 30;
+        String gender = profile.getGender() != null ? profile.getGender().trim().toLowerCase() : "other";
+
+        // Mifflin-St Jeor formula
+        double bmr;
+        if ("male".equals(gender) || "m".equals(gender)) {
+            bmr = (10.0 * weight) + (6.25 * height) - (5.0 * age) + 5.0;
+        } else if ("female".equals(gender) || "f".equals(gender)) {
+            bmr = (10.0 * weight) + (6.25 * height) - (5.0 * age) - 161.0;
+        } else {
+            bmr = (10.0 * weight) + (6.25 * height) - (5.0 * age) - 78.0;
+        }
+
+        // Activity multiplier from lifestyle
+        double activityMultiplier = 1.375; // lightly active default
+        String lifestyle = profile.getLifestyle() != null ? profile.getLifestyle().toLowerCase() : "";
+        if (lifestyle.contains("sedentary")) {
+            activityMultiplier = 1.2;
+        } else if (lifestyle.contains("very") || lifestyle.contains("heavy") || lifestyle.contains("athlete")) {
+            activityMultiplier = 1.725;
+        } else if (lifestyle.contains("moderate") || lifestyle.contains("active")) {
+            activityMultiplier = 1.55;
+        }
+
+        double tdee = bmr * activityMultiplier;
+
+        // Calorie goal adjustment
+        String goal = profile.getGoals() != null ? profile.getGoals().toLowerCase() : "";
+        int baseCalories;
+        if (goal.contains("lose") || goal.contains("cut") || goal.contains("weight loss") || goal.contains("fat loss")) {
+            baseCalories = (int) Math.round(tdee - 450);
+        } else if (goal.contains("gain") || goal.contains("bulk") || goal.contains("muscle")) {
+            baseCalories = (int) Math.round(tdee + 350);
+        } else {
+            baseCalories = (int) Math.round(tdee);
+        }
+        baseCalories = Math.max(1200, Math.min(4000, baseCalories));
+
+        // Macronutrient distribution
+        int proteinGrams = (int) Math.round(weight * 1.8);
+        int fatGrams = (int) Math.round((baseCalories * 0.25) / 9.0);
+        int remainingCalories = baseCalories - (proteinGrams * 4) - (fatGrams * 9);
+        int carbsGrams = Math.max(50, (int) Math.round(remainingCalories / 4.0));
+
+        // Hydration formula: 35ml per kg of bodyweight
+        double waterLiters = Math.max(1.8, Math.min(4.5, (weight * 0.035)));
 
         NutritionPlan plan = NutritionPlan.builder()
                 .userId(userId)

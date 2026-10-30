@@ -1,5 +1,5 @@
 # 🏥 HealthVerse AI
-### *An Agentic Digital Healthcare Ecosystem for Predictive Health Monitoring, AI Clinical Triage, and Personalized Wellness*
+### *An Agentic Digital Healthcare Ecosystem for Intelligent, Personalized and Predictive Health Management*
 
 ---
 
@@ -7,12 +7,12 @@
 [![Java](https://img.shields.io/badge/Java-21-orange.svg?logo=openjdk&logoColor=white)](https://openjdk.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![Python](https://img.shields.io/badge/Python-3.11+-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
-[![React](https://img.shields.io/badge/React-18.2-61DAFB.svg?logo=react&logoColor=black)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.2-3178C6.svg?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-5.2-646CFF.svg?logo=vite&logoColor=white)](https://vitejs.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.4-38B2AC.svg?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![React](https://img.shields.io/badge/React-18.2.0-61DAFB.svg?logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.2.2-3178C6.svg?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-5.2.0-646CFF.svg?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.4.3-38B2AC.svg?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Docker](https://img.shields.io/badge/Docker-Compose%20Ready-2496ED.svg?logo=docker&logoColor=white)](https://www.docker.com/)
-[![Ollama](https://img.shields.io/badge/Ollama-Local%20LLM%20(qwen2.5%3A7b)-black.svg?logo=ollama&logoColor=white)](https://ollama.com/)
+[![Ollama](https://img.shields.io/badge/Ollama-Local%20LLM%20(Dual%203B%20%2F%207B)-black.svg?logo=ollama&logoColor=white)](https://ollama.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791.svg?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-6.0-47A248.svg?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![Redis](https://img.shields.io/badge/Redis-7.0-DC382D.svg?logo=redis&logoColor=white)](https://redis.io/)
@@ -22,11 +22,11 @@
 
 ## 📌 Executive Summary
 
-**HealthVerse AI** is an enterprise-grade, service-oriented digital healthcare ecosystem that bridges the gap between conventional health tracking and intelligent, proactive medical assistance. By synthesizing **Service-Oriented Architecture (SOA)**, **polyglot persistence**, distributed **Spring Boot 3.x microservices**, and an **asynchronous Agentic AI layer powered by local LLMs (Ollama `qwen2.5:7b`)**, HealthVerse AI delivers a continuous cycle of:
+**HealthVerse AI** is an enterprise-grade, Service-Oriented Architecture (SOA) healthcare ecosystem that transforms passive health metrics into an active, intelligent, and proactive medical intelligence layer. By harmonizing distributed **Spring Boot 3.3.4 microservices**, **polyglot persistence** (PostgreSQL, MongoDB, and Redis), and a local-first **Agentic AI layer powered by Ollama (`qwen2.5:3b` / `qwen2.5:7b`)**, HealthVerse AI delivers an end-to-end continuous health loop:
 
-$$\text{Continuous Monitoring} \longrightarrow \text{Predictive Analysis} \longrightarrow \text{Clinical Triage} \longrightarrow \text{Personalized Intervention}$$
+$$\text{Daily Vitals Tracking} \longrightarrow \text{Biomarker Extraction} \longrightarrow \text{Digital Health Twin} \longrightarrow \text{Clinical AI Synthesis} \longrightarrow \text{Personalized Action}$$
 
-Unlike fragmented fitness trackers or isolated symptom questionnaires, HealthVerse AI aggregates longitudinal vitals, daily lifestyle habits, clinical lab reports (PDFs), and self-reported symptoms into a unified **Digital Health Twin**, empowering users with actionable, evidence-based wellness guidance while upholding strict data sovereignty and zero-trust security.
+Unlike conventional wellness applications that rely on static questionnaires or third-party cloud APIs that compromise patient confidentiality, HealthVerse AI ensures complete data sovereignty through **local on-premise LLM inference**, **deterministic biomarker extraction**, and **mathematically grounded clinical calculations** (Mifflin-St Jeor BMR/TDEE and MET physical load modeling).
 
 ---
 
@@ -40,90 +40,117 @@ Unlike fragmented fitness trackers or isolated symptom questionnaires, HealthVer
 | **Academic Year** | 2026 – 2027 |
 | **Project Guide** | **Dr. Srikanth Cherukuvada** |
 | **Project Team** | **P. Pranathi** (ID: `2420030043`)<br>**R. L. S. Giridhar** (ID: `2420030171`)<br>**D. Krishna Chaitanya** (ID: `2420090077`) |
-| **Submission Artifacts** | `SOA_PROJECT_ABSTRACT.pdf`, Review Presentations, Skill Evaluations (Exp-1, Exp-2) |
+| **GitHub Repository** | [https://github.com/rgiridhar1008/HealthVerse-AI.git](https://github.com/rgiridhar1008/HealthVerse-AI.git) |
 
 ---
 
 ## 📑 Table of Contents
 
-- [Core Value Proposition & Features](#-core-value-proposition--features)
-  - [1. Digital Health Twin Engine](#1-digital-health-twin-engine)
-  - [2. Intelligent Symptom Analyzer & Triage](#2-intelligent-symptom-analyzer--triage)
-  - [3. AI Medical Report & Biomarker Extractor](#3-ai-medical-report--biomarker-extractor)
-  - [4. Dynamic Nutrition & Caloric Planner](#4-dynamic-nutrition--caloric-planner)
-  - [5. Personalized Fitness & Workout Engine](#5-personalized-fitness--workout-engine)
-  - [6. Predictive Wellness & Mental Health Suite](#6-predictive-wellness--mental-health-suite)
-  - [7. Empathetic Conversational Health Assistant](#7-empathetic-conversational-health-assistant)
-- [System Architecture & SOA Principles](#-system-architecture--soa-principles)
-  - [High-Level Architecture Diagram](#high-level-architecture-diagram)
-  - [SOA Design Principles Applied](#soa-design-principles-applied)
-  - [Microservices Catalog & Port Allocation](#microservices-catalog--port-allocation)
-- [Agentic AI Layer Architecture](#-agentic-ai-layer-architecture)
-  - [Unified Local-First Inference Pipeline](#unified-local-first-inference-pipeline)
-  - [Agent Delegation Topology](#agent-delegation-topology)
-- [Technology Stack Matrix](#-technology-stack-matrix)
-- [Database Schema & Polyglot Persistence](#-database-schema--polyglot-persistence)
-- [End-to-End API Documentation](#-end-to-end-api-documentation)
-- [Repository Structure](#-repository-structure)
-- [Installation & Quickstart Guide](#-installation--quickstart-guide)
-  - [Option A: One-Click Docker Compose (Recommended)](#option-a-one-click-docker-compose-recommended)
-  - [Option B: Bare-Metal Local Development Setup](#option-b-bare-metal-local-development-setup)
-- [Database & Demo Seeding](#-database--demo-seeding)
+- [Core Value Proposition & Features](#-core-features)
+- [Medical Report Analysis Engine](#-medical-report-analysis-engine)
+- [Digital Health Twin Architecture](#-digital-health-twin-architecture)
+- [System Architecture & SOA Topology](#-system-architecture)
+- [Technology Stack Matrix](#-technology-stack)
+- [AI Performance Optimization & Empirical Benchmarks](#-ai-performance-optimization)
+- [Project Directory Structure](#-project-directory-structure)
+- [Installation & Quickstart Guide](#-installation-and-setup)
+- [Environment Configuration](#-environment-variables)
+- [API Documentation Catalog](#-api-documentation)
 - [Automated Verification & Testing](#-automated-verification--testing)
-- [Security, Privacy & Ethical Compliance](#-security-privacy--ethical-compliance)
 - [Future Roadmap](#-future-roadmap)
-- [License & Disclaimer](#-license--disclaimer)
+- [Medical Disclaimer & Ethics](#-medical-disclaimer)
+- [Contributors & Acknowledgements](#-contributors--acknowledgements)
 
 ---
 
-## 🌟 Core Value Proposition & Features
+## 🚀 Core Features
 
 ### 1. Digital Health Twin Engine
-- **Holistic Biometric Modeling**: Continuously constructs a virtual physiological representation of the user based on age, gender, BMI, resting heart rate, blood pressure, blood glucose, sleep architecture, and historical lab reports.
-- **Dynamic 0–100 Health Score**: Evaluates health across four weighted sub-domains:
-  - *Cardiovascular Health*: Heart rate stability, systolic/diastolic ratios.
-  - *Metabolic Fitness*: BMI, blood glucose ranges, daily caloric equilibrium.
-  - *Lifestyle & Activity*: Step volume (10k step threshold), hydration index.
-  - *Sleep & Recovery*: Deep sleep duration, regularity, and sleep hygiene.
-- **Longitudinal Trend Forecasting**: Identifies upward or deteriorating health trajectories over 7, 30, and 90-day intervals.
+- **Longitudinal Biometric Ledger**: Continuously constructs a dynamic physiological model of the user based on age, gender, height, weight, resting heart rate, blood pressure, blood glucose, sleep duration, and lab reports.
+- **Dynamic 0–100 Health Score**: Evaluates user physiological status across 6 weighted domains: Physical, Mental, Recovery, Sleep, Nutrition, and Focus.
+- **Biometric Trend Analytics**: Visualizes 7-day and 30-day activity, sleep stages, and vitals trajectories with Recharts.
 
-### 2. Intelligent Symptom Analyzer & Triage
-- **Conversational & Structured Symptom Ingestion**: Accepts multi-symptom descriptions (e.g., *"Persistent dull headache for 3 days with light sensitivity and mild nausea"*).
-- **Clinical Urgency Classification**: Categorizes encounters into `EMERGENCY`, `HIGH_PRIORITY`, `MEDIUM_PRIORITY`, or `MILD_CARE`.
-- **Differential Possibilities & Action Plan**: Returns ranked clinical possibilities, red-flag warnings, non-pharmacological self-care strategies, and recommended medical specialties (e.g., *Neurologist*, *Cardiologist*).
-- **Persistent Symptom Journaling**: Records all triage encounters into MongoDB/PostgreSQL for longitudinal doctor consultations.
+### 2. Medical Report Analyzer & Biomarker Extraction
+- **GridFS Secure PDF Storage**: Ingests clinical lab reports directly into MongoDB GridFS binary storage.
+- **Deterministic Biomarker Pre-Extraction**: Extracts exact measured values, units, and laboratory-defined reference ranges for 30+ clinical markers (CBC, Lipid Profile, Liver LFT, Kidney KFT, Diabetes HbA1c, Thyroid, Vitamins) with zero hallucinations.
+- **Live 5-Stage Processing Pipeline**: Displays real-time progress (`EXTRACTING_TEXT` $\to$ `IDENTIFYING_BIOMARKERS` $\to$ `GENERATING_CLINICAL_INSIGHTS` $\to$ `PREPARING_REPORT` $\to$ `COMPLETED`).
+- **Clinical Synthesis**: Identifies abnormal markers and synthesizes physician-reviewed plain language summaries and actionable lifestyle recommendations.
 
-### 3. AI Medical Report & Biomarker Extractor
-- **Direct PDF Upload & Ingestion**: Users can upload blood panels, lipid profiles, metabolic tests, and diagnostic summaries (PDF format).
-- **Automated Text & Table Extraction**: Uses native PDF extraction pipelines to isolate quantitative biomarkers (`HbA1c`, `Total Cholesterol`, `HDL/LDL`, `TSH`, `Creatinine`, `WBC`).
-- **Clinical vs. Patient Explanations**: Converts complex laboratory nomenclature into clear, patient-friendly explanations.
-- **Color-Coded Risk Flags**: Automatically classifies each biomarker into `OPTIMAL`, `BORDERLINE`, or `CRITICAL` with follow-up inquiry suggestions for physicians.
+### 3. AI Symptom Analyzer & Triage
+- **Context-Aware Assessment**: Synthesizes self-reported symptoms, onset duration, and severity in context with the user's live health profile (age, BMI, allergies, existing conditions).
+- **Urgency Classification**: Categorizes symptoms into `LOW`, `MEDIUM`, or `EMERGENCY` triage tiers with red-flag escalation guidance.
 
-### 4. Dynamic Nutrition & Caloric Planner
-- **Targeted Macronutrient Profiles**: Calculates daily caloric targets (BMR + TDEE) and splits into Protein, Carbohydrates, and Healthy Fats.
-- **Dietary Restriction Filters**: Fully customizable for *Vegetarian*, *Vegan*, *Keto*, *Paleo*, *Halal*, *Low-FODMAP*, *Gluten-Free*, and allergy exclusion lists (Peanuts, Dairy, Shellfish, etc.).
-- **Meal-by-Meal Schedules**: Generates detailed breakfasts, lunches, dinners, and healthy snacks with ingredients, portion sizes, preparation notes, and nutritional benefits.
+### 4. Empathetic Conversational Health Assistant (AI Chat)
+- **Multi-Turn Interactive Dialogue**: Context-aware clinical wellness chat powered by local LLMs with streaming responses.
+- **Clinical Safety Boundaries**: Medical disclaimer integration with automated refusal for hazardous self-medication prompts.
 
-### 5. Personalized Fitness & Workout Engine
-- **Goal-Adaptive Regimens**: Calibrated for *Weight Loss*, *Hypertrophy (Muscle Gain)*, *Cardiovascular Endurance*, *Functional Mobility*, or *Stress Reduction*.
-- **Multi-Level Progression**: Accommodates *Beginner*, *Intermediate*, and *Advanced* fitness levels with customizable weekly split frequencies (3 to 6 days/week).
-- **Safety First**: Incorporates warmup protocols, active recovery days, hydration guidance, and biomechanical posture cues to prevent musculoskeletal injuries.
+### 5. Personalized Nutrition Planner
+- **Mifflin-St Jeor Clinical BMR/TDEE**: Computes exact Basal Metabolic Rate and Total Daily Energy Expenditure based on actual user profile data (height, weight, age, biological sex, and lifestyle activity coefficient).
+- **Clinical Macro & Hydration Distribution**: Automatically computes target calories, protein ($1.8\text{ g/kg}$), fat ($25\%$), complex carbohydrates, and daily hydration ($35\text{ mL/kg}$).
+- **Dietary Alignment**: Supports Mediterranean, Keto, High-Protein, Vegetarian, and Vegan meal suggestions.
 
-### 6. Predictive Wellness & Mental Health Suite
-- **Stress & Burnout Index**: Integrates resting physiological strain with logged sleep metrics and lifestyle stress indicators.
-- **Interactive Breathing Guide**: Real-time animated **4-7-8 Box Breathing** exercise widget for parasympathetic nervous system activation.
-- **Habit Tracking & Streaks**: Monitors daily hydration goals, movement milestones, sleep targets, and mindfulness minutes.
+### 6. Personalized Fitness Regimen
+- **MET (Metabolic Equivalent of Task) Modeling**: Calculates realistic calorie burn targets based on user fitness level, workout duration, and body weight.
+- **Interactive Daily Checklist & Timer**: In-browser workout interval timer (Work/Rest phases) with audio-visual completion celebrations.
 
-### 7. Empathetic Conversational Health Assistant
-- **24/7 Context-Aware AI Chat**: Direct conversational interface powered by local AI.
-- **Profile-Grounded Advice**: The agent maintains awareness of the patient's age, conditions, active medications, and logged vitals without requiring repeated prompts.
-- **Strict Safety Boundaries**: Rigorously tuned to never hallucinate prescriptive medication dosages and always display triage disclaimers when red flags appear.
+### 7. Daily Health Vitals Tracking
+- **Interactive Quick-Log Modal**: Allows daily recording of resting heart rate, blood pressure, blood glucose, steps, and sleep duration.
+- **Idempotent Upsert Guarantee**: Safely updates existing records for the current day without creating duplicate database rows or 400 Bad Request errors.
 
 ---
 
-## 🏗️ System Architecture & SOA Principles
+## 🔬 Medical Report Analysis Engine
 
-### High-Level Architecture Diagram
+HealthVerse AI processes unstructured and semi-structured laboratory reports through a dual deterministic + agentic AI pipeline:
+
+```
+[ PDF Lab Report ]
+        │
+        ▼
+[ 1. GridFS Extraction & OCR Fallback ] ─── (Extracts clean raw text from PDF bytes)
+        │
+        ▼
+[ 2. Deterministic Biomarker Identification ] ── (Matches 30+ clinical parameters, units, lab ranges)
+        │                                     (Flags HIGH, LOW, NORMAL strictly from lab reference)
+        │                                     (Duration: 6.45 ms — Zero Hallucination)
+        ▼
+[ 3. Compact Clinical AI Synthesis ] ─────── (Sends extracted abnormal findings to Ollama)
+        │                                     (Generates clinical explanations & lifestyle recommendations)
+        │                                     (Duration: ~5.4 seconds)
+        ▼
+[ 4. MongoDB Document Ledger ] ───────────── (Stores findings, interpretations, and status)
+        │
+        ▼
+[ 5. Interactive Frontend Dashboard ] ────── (Displays summary, abnormal flags, and full findings table)
+```
+
+> [!IMPORTANT]
+> **Deterministic Reliability**: Biomarkers, numerical values, and reference ranges are **never fabricated by the LLM**. The deterministic parser extracts exact laboratory figures directly from the report text, while the LLM is restricted to providing plain-language explanations and evidence-based wellness suggestions.
+
+---
+
+## 🧬 Digital Health Twin Architecture
+
+The Digital Health Twin creates a unified virtual physiological model by aggregating longitudinal user data across three distinct microservice data stores:
+
+1. **Relational Biometric Ledger (PostgreSQL)**: Longitudinal daily logs of systolic/diastolic blood pressure, resting heart rate, blood glucose, daily steps, and sleep hours.
+2. **Document Health Store (MongoDB)**: Extracted laboratory findings, lipid profiles, glycemic metrics, and liver/kidney biomarkers.
+3. **In-Memory Cache (Redis)**: Rapid retrieval of active twin state, current health scores, and cached recommendation vectors.
+
+### Health Score Domain Calculation
+The aggregate Health Score ($0 - 100$) is computed across six core physiological domains:
+- **Physical Domain**: Daily step count vs goal ($10,000\text{ steps}$), active exercise minutes, and BMI normalization.
+- **Mental Domain**: Stress self-assessment and mindfulness session adherence.
+- **Recovery Domain**: Resting heart rate vs baseline ($60-75\text{ bpm}$) and heart rate variability indicators.
+- **Sleep Domain**: Sleep duration ($7-9\text{ hours}$) and restorative sleep consistency.
+- **Nutrition Domain**: Calorie balance vs TDEE target and daily hydration goal adherence.
+- **Focus Domain**: Screen fatigue index, break cadence, and reported mental clarity.
+
+---
+
+## 🏛️ System Architecture
+
+HealthVerse AI follows a strictly decoupled, **Service-Oriented Architecture (SOA)** design. Services communicate asynchronously and through RESTful HTTP/JSON contracts, orchestrated through Netflix Eureka Service Discovery and protected by a centralized Spring Cloud API Gateway.
 
 ```mermaid
 graph TB
@@ -137,30 +164,30 @@ graph TB
     end
 
     subgraph Core_Microservices ["Business Microservice Cluster"]
-        AuthSvc["Auth Service (:8081)<br/>BCrypt & Stateless JWT Issuer"]
-        UserSvc["User & Twin Service (:8082)<br/>Profile & Digital Health Twin"]
-        ReportSvc["Report Service (:8084)<br/>PDF Document Storage"]
-        AISvc["AI Analysis Service (:8085)<br/>PDF Parsing & Symptom Triage"]
-        NutFitSvc["Nutrition & Fitness (:8086)<br/>Diet & Workout Planning"]
-        WellSvc["Wellness Service (:8087)<br/>Predictive Wellness Scoring"]
+        AuthSvc["Auth Service (:8081)<br/>BCrypt & Stateless JWT Issuer (HS384)"]
+        UserSvc["User & Twin Service (:8082)<br/>Profile & Digital Health Twin Aggregator"]
+        ReportSvc["Report Service (:8084)<br/>PDF Document Storage & GridFS"]
+        AISvc["AI Analysis Service (:8085)<br/>Report Interpretation & Symptom Triage"]
+        NutFitSvc["Nutrition & Fitness Service (:8086)<br/>Mifflin-St Jeor & MET Routine Planner"]
+        WellSvc["Wellness Service (:8087)<br/>Predictive Wellness Scoring Engine"]
     end
 
     subgraph AI_Intelligence ["Agentic AI Layer"]
-        AIAgent["Python FastAPI AI Service (:8000)<br/>Domain Agents & JSON Synthesizer"]
-        OllamaEngine["Local Ollama LLM (:11434)<br/>Model: qwen2.5:7b"]
-        GeminiEngine["Google Gemini Flash<br/>Optional Cloud Fallback"]
+        AIAgent["Python FastAPI AI Service (:8000)<br/>Domain Agents & Structured JSON Synthesizer"]
+        OllamaEngine["Local Ollama Engine (:11434)<br/>Active: qwen2.5:3b (100% GPU)<br/>Optional: qwen2.5:7b"]
+        GeminiEngine["Google Gemini Flash<br/>(Optional Cloud Fallback)"]
     end
 
     subgraph Polyglot_Data ["Polyglot Persistence Layer"]
         PostgresDB[("PostgreSQL 15<br/>Relational ACID Storage")]
-        MongoDB[("MongoDB 6.0<br/>Document Store for Reports")]
+        MongoDB[("MongoDB 6.0<br/>Document Store & GridFS Reports")]
         RedisDB[("Redis 7.0<br/>In-Memory Cache for Twin State")]
     end
 
-    %% Routing
+    %% Client Routing
     WebClient -->|HTTP / REST / JWT| Gateway
     Gateway <-->|Service Lookup| Eureka
-    
+
     Gateway -->|/api/auth/**| AuthSvc
     Gateway -->|/users/**, /api/health/**| UserSvc
     Gateway -->|/api/reports/**| ReportSvc
@@ -168,7 +195,7 @@ graph TB
     Gateway -->|/api/nutrition/**, /api/fitness/**| NutFitSvc
     Gateway -->|/api/wellness/**| WellSvc
 
-    %% Service to Eureka
+    %% Service Registration
     AuthSvc -.->|Heartbeat| Eureka
     UserSvc -.->|Heartbeat| Eureka
     ReportSvc -.->|Heartbeat| Eureka
@@ -176,16 +203,16 @@ graph TB
     NutFitSvc -.->|Heartbeat| Eureka
     WellSvc -.->|Heartbeat| Eureka
 
-    %% Inter-service / AI
+    %% Inter-service AI Delegation
     UserSvc -->|Digital Twin Aggregation| AIAgent
-    AISvc -->|Symptom & Report Analysis| AIAgent
-    NutFitSvc -->|Diet & Fitness Generation| AIAgent
-    WellSvc -->|Wellness Insights| AIAgent
+    AISvc -->|Biomarker Synthesis & Triage| AIAgent
+    NutFitSvc -->|Diet & Exercise Suggestions| AIAgent
+    WellSvc -->|Wellness Trend Predictions| AIAgent
 
-    AIAgent -->|Default Provider| OllamaEngine
-    AIAgent -.->|Fallback Provider| GeminiEngine
+    AIAgent -->|Primary Local Provider| OllamaEngine
+    AIAgent -.->|Optional Cloud Fallback| GeminiEngine
 
-    %% Persistence mappings
+    %% Persistence
     AuthSvc --> PostgresDB
     UserSvc --> PostgresDB
     UserSvc --> RedisDB
@@ -197,640 +224,349 @@ graph TB
 
 ---
 
-### SOA Design Principles Applied
+## 💻 Technology Stack
 
-HealthVerse AI is rigorously architected around foundational Service-Oriented Architecture and microservice design patterns:
+### Frontend Architecture
+- **Framework**: React 18.2.0 with TypeScript 5.2.2
+- **Build Tool**: Vite 5.2.0 (Fast HMR & Optimized Rollup chunking)
+- **Styling**: Tailwind CSS 3.4.3 with PostCSS and Autoprefixer
+- **Motion & Interactions**: Framer Motion 11.0.8
+- **Data Visualizations**: Recharts 2.12.3
+- **Icons**: Lucide React 0.363.0
+- **HTTP Client**: Axios 1.6.8 with bearer token interceptors
 
-1. **Standardized Service Contracts**: All microservices interact via uniform RESTful HTTP/JSON interfaces documented with explicit DTO request/response schemas.
-2. **Service Loose Coupling**: Microservices maintain zero compile-time dependencies on one another. Inter-service coordination occurs dynamically through Spring Cloud Gateway and Eureka Discovery or via asynchronous REST integrations.
-3. **Service Abstraction & Encapsulation**: Internal business logic, persistence entities, and database dialects are entirely encapsulated behind microservice boundaries.
-4. **Service Autonomy & Independent Deployability**: Each microservice runs in its own lightweight Docker container with isolated runtime dependencies, lifecycle management, and horizontal scalability.
-5. **Polyglot Persistence**: Storage engines are matched to the specific data domain:
-   - Relational structured data (identities, daily metrics, structured plans) in **PostgreSQL**.
-   - Flexible, schema-less medical records and clinical reports in **MongoDB**.
-   - Ultra-low latency transient twin calculations in **Redis**.
-6. **Stateless Service Operations**: Microservices do not store server-side HTTP sessions. Authentication state is transferred per-request using cryptographically verified JSON Web Tokens (JWT).
+### Backend Microservices
+- **Framework**: Spring Boot 3.3.4 on Java 21 (OpenJDK LTS)
+- **Service Discovery**: Netflix Eureka Client & Server (Spring Cloud 2023.0.3)
+- **API Gateway**: Spring Cloud Gateway (Reactive WebFlux & Netty)
+- **Security**: Spring Security 6.x with Stateless JWT authentication (HMAC-SHA384)
+- **Data Persistence**: Spring Data JPA / Hibernate 6, Spring Data MongoDB, Spring Data Redis
+- **Build System**: Apache Maven 3.9+ Multi-Module Project
 
----
+### Agentic AI Layer
+- **Framework**: Python 3.11+ with FastAPI 0.110+ & Uvicorn
+- **Data Validation**: Pydantic v2 (Strict Schema Validation & Settings)
+- **Document Processing**: PyPDF2 3.0.0, PyTesseract 0.3.10, pdf2image 1.17.0
+- **Inference Server**: Local Ollama runtime with GPU acceleration
 
-### Microservices Catalog & Port Allocation
-
-| Service Identifier | Technology | Local Port | Container Name | Storage & Downstream Dependencies |
-| :--- | :--- | :--- | :--- | :--- |
-| **`eureka-server`** | Spring Boot / Eureka | `8761` | `healthverse-discovery-server` | None (In-memory Service Registry) |
-| **`api-gateway`** | Spring Cloud Gateway | `8080` | `healthverse-api-gateway` | Eureka (`:8761`) |
-| **`auth-service`** | Spring Boot 3.3.4 | `8081` | `healthverse-auth-service` | PostgreSQL (`:5432`) |
-| **`user-service`** | Spring Boot 3.3.4 | `8082` | `healthverse-user-service` | PostgreSQL (`:5432`), Redis (`:6379`), AI Agent (`:8000`) |
-| **`report-service`** | Spring Boot 3.3.4 | `8084` | `healthverse-report-service` | MongoDB (`:27017`) |
-| **`ai-analysis-service`** | Spring Boot 3.3.4 | `8085` | `healthverse-ai-analysis-service` | MongoDB (`:27017`), AI Agent (`:8000`) |
-| **`nutrition-fitness-service`** | Spring Boot 3.3.4 | `8086` | `healthverse-nutrition-fitness-service`| PostgreSQL (`:5432`), AI Agent (`:8000`) |
-| **`wellness-service`** | Spring Boot 3.3.4 | `8087` | `healthverse-wellness-service` | PostgreSQL (`:5432`), AI Agent (`:8000`) |
-| **`ai-agent-service`** | Python 3.11 / FastAPI | `8000` | `healthverse-ai-agent-service` | Local Ollama (`:11434`) / Gemini API |
-| **`frontend`** | React 18 / Vite / TS | `5173` | (Host / Dev Server) | API Gateway (`:8080`) |
-| **PostgreSQL Database** | PostgreSQL 15 Alpine | `5432` | `healthverse-postgresql` | Persistent Volume `postgres_data` |
-| **MongoDB Database** | MongoDB 6.0 | `27017` | `healthverse-mongodb` | Persistent Volume `mongodb_data` |
-| **Redis Cache** | Redis 7.0 Alpine | `6379` | `healthverse-redis` | Persistent Volume `redis_data` |
-| **Ollama LLM Engine** | Ollama Engine | `11434` | (Host Native / Docker Internal) | Local Model Weights (`qwen2.5:7b`) |
+### Polyglot Persistence & Infrastructure
+- **Relational Database**: PostgreSQL 15 Alpine (ACID User Profiles, Vitals, Plans)
+- **Document Database**: MongoDB 6.0 (GridFS Binary PDFs, Analysis Reports)
+- **In-Memory Cache**: Redis 7.0 Alpine (Digital Twin state caching)
+- **Containerization**: Docker 26.x & Docker Compose v2 (12 orchestrated services)
 
 ---
 
-## 🧠 Agentic AI Layer Architecture
+## ⚡ AI Performance Optimization
 
-### Unified Local-First Inference Pipeline
+### The Memory Bottleneck on Mobile/Laptop GPUs
+On entry-to-midrange developer laptops (such as the NVIDIA GeForce RTX 3050 Laptop with 6 GB VRAM), Windows WDDM (Windows Display Driver Model) reserves $\approx 1.5\text{ GB}$ of VRAM for desktop composition and display management. This leaves $\approx 4.5\text{ GB}$ of usable CUDA memory for LLM context and weights.
 
-HealthVerse AI introduces a centralized, high-efficiency AI abstraction layer (`ai-agents/services/ai_provider.py`) engineered to eliminate cloud API bottlenecks, latency variability, and privacy risks.
+- **`qwen2.5:7b` (5.2 GB resident)**: Exceeds the usable 4.5 GB VRAM threshold. Ollama offloads **18% of layers to CPU RAM**, creating severe PCIe memory-swapping stalls that limit generation throughput to $\approx 21\text{ tokens/sec}$.
+- **`qwen2.5:3b` (2.2 GB resident)**: Fits **100% inside dedicated GDDR6 VRAM** with zero CPU offloading, unlocking peak GPU compute at **$\approx 67\text{ tokens/sec}$ (a $3.2\times$ throughput increase)**.
 
-```
-       [ Microservice Request (JSON Payload) ]
-                         │
-                         ▼
-        ┌──────────────────────────────────┐
-        │  AIProvider (FastAPI Core :8000) │
-        └──────────────────────────────────┘
-                         │
-        ┌────────────────┴─────────────────┐
-        ▼                                  ▼
-┌───────────────────────────────┐  ┌───────────────────────────────┐
-│  PRIMARY: Ollama (Local)      │  │  FALLBACK: Google Gemini API  │
-│  Model: qwen2.5:7b            │  │  Model: gemini-1.5-flash      │
-│  • Zero API Cost              │  │  • Cloud Resilience           │
-│  • Complete Patient Privacy   │  │  • High-throughput burst     │
-│  • Deterministic JSON Mode    │  │  • Off-host failover          │
-└───────────────────────────────┘  └───────────────────────────────┘
-                         │
-                         ▼
-        ┌──────────────────────────────────┐
-        │  Schema Validation & Sanitizer   │
-        │  • Regex JSON Extractor          │
-        │  • Pydantic Schema Enforcement   │
-        │  • Graceful Domain Fallback      │
-        └──────────────────────────────────┘
-                         │
-                         ▼
-      [ Structured Domain Response to Backend ]
-```
+### Measured Empirical Benchmark Results
+*Benchmark Environment: Intel Core i5 Laptop, NVIDIA RTX 3050 Laptop GPU (6 GB VRAM), Local Ollama, 3 Runs per feature.*
 
-### Agent Delegation Topology
+| Feature / Endpoint | `qwen2.5:7b` Latency (3-Run Avg) | `qwen2.5:7b` Throughput | `qwen2.5:3b` Latency (3-Run Avg) | `qwen2.5:3b` Throughput | Latency Reduction | Output Quality & JSON Validity |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Medical Report Synthesis** | **13.24s** *(50.14s unoptimized)* | 21.3 tok/s (18% CPU / 82% GPU) | **5.42s** | 69.0 tok/s (**100% GPU**) | **-89.2%** *(vs unoptimized)* | **100% Valid JSON** (12 biomarkers matched, 4 abnormal) |
+| **Symptom Analyzer** | **8.96s** | 21.2 tok/s (18% CPU / 82% GPU) | **3.84s** | 66.5 tok/s (**100% GPU**) | **-57.1%** | **100% Valid JSON** (Clinical triage & red-flag detection) |
+| **AI Direct Health Chat** | **16.52s** | 21.0 tok/s (18% CPU / 82% GPU) | **5.22s** | 68.6 tok/s (**100% GPU**) | **-68.4%** | **100% Valid Markdown** (Empathetic hydration/energy guidance) |
+| **Nutrition Meal Suggestions**| **6.46s** | 21.0 tok/s (18% CPU / 82% GPU) | **4.41s** | 67.1 tok/s (**100% GPU**) | **-31.7%** | **100% Valid JSON** (Mediterranean dietary suggestions) |
+| **Fitness Routine Guidance** | **5.38s** | 21.2 tok/s (18% CPU / 82% GPU) | **3.55s** | 65.5 tok/s (**100% GPU**) | **-34.0%** | **100% Valid JSON** (3-exercise circuit with rep intervals) |
+| **Predictive Wellness** | **4.14s** | 21.1 tok/s (18% CPU / 82% GPU) | **3.15s** | 63.5 tok/s (**100% GPU**) | **-23.9%** | **100% Valid JSON** (Longitudinal 14-day circadian trend) |
 
-1. **Symptom Triage Agent (`/api/v1/agents/health/analyze`)**:
-   - Analyzes raw textual symptom descriptions.
-   - Evaluates vital signs and known medical history.
-   - Determines clinical urgency, differential categories, and safe triage advice.
-2. **Medical Report Agent (`/api/v1/agents/report/analyze`)**:
-   - Parses OCR/extracted lab text.
-   - Maps biomarkers against standard reference intervals (Wintrobe hematology, CDC metabolic guidelines).
-   - Generates layman summaries and clinical validation bullet points.
-3. **Nutritional Synthesis Agent (`/api/v1/agents/diet/generate`)**:
-   - Calculates macronutrient splits from physical characteristics.
-   - Synthesizes 7-day meal plans matching micro-preferences and allergen restrictions.
-4. **Physical Training Agent (`/api/v1/agents/fitness/generate`)**:
-   - Builds progressive overload routines structured by muscle groups.
-   - Embeds warm-up, cool-down, and injury mitigation cues.
-5. **Wellness & Cognitive Recovery Agent (`/api/v1/agents/wellness/generate`)**:
-   - Aggregates stress factors, sleep efficiency, and physical strain.
-   - Suggests mindfulness exercises, circadian realignment, and recovery protocols.
-6. **Digital Health Twin Agent (`/api/v1/agents/twin/analyze`)**:
-   - Performs composite multi-domain scoring (0–100 scale).
-   - Generates personalized health trajectories, risk alerts, and top actionable recommendations.
-7. **Conversational Assistant Agent (`/api/v1/agents/chat`)**:
-   - Real-time multi-turn conversational agent with user context memory.
+> [!NOTE]
+> The original unoptimized medical report pipeline required **50.14 seconds** because the model was prompted to extract all tabular data from raw PDF text into 1,024 JSON tokens. With deterministic biomarker pre-extraction, the 7B model dropped to **13.24 seconds**, and the 3B model achieved **5.42 seconds**—representing an overall **89.2% speedup**.
 
 ---
 
-## 💻 Technology Stack Matrix
+## 📂 Project Directory Structure
 
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                              FRONTEND LAYER                                 │
-├───────────────────┬───────────────────┬───────────────────┬─────────────────┤
-│ React 18.2        │ TypeScript 5.2    │ Vite 5.2          │ Tailwind CSS 3.4│
-│ Lucide React      │ Recharts (Charts) │ Axios 1.6         │ Framer Motion   │
-├───────────────────┴───────────────────┴───────────────────┴─────────────────┤
-│                             BACKEND SERVICES                                │
-├───────────────────┬───────────────────┬───────────────────┬─────────────────┤
-│ Spring Boot 3.3.4 │ Java 21 LTS       │ Spring Cloud GW   │ Netflix Eureka  │
-│ Spring Security   │ Spring Data JPA   │ Spring Data Mongo │ JJWT 0.12.6     │
-├───────────────────┴───────────────────┴───────────────────┴─────────────────┤
-│                             INTELLIGENCE & AI                               │
-├───────────────────┬───────────────────┬───────────────────┬─────────────────┤
-│ Python 3.11+      │ FastAPI 0.110+    │ Pydantic v2       │ Aiohttp / Async │
-│ Ollama (qwen2.5)  │ Google Gemini API │ PyPDF / PDFBox    │ Uvicorn ASGI    │
-├───────────────────┴───────────────────┴───────────────────┴─────────────────┤
-│                         INFRASTRUCTURE & STORAGE                            │
-├───────────────────┬───────────────────┬───────────────────┬─────────────────┤
-│ PostgreSQL 15     │ MongoDB 6.0       │ Redis 7.0 Alpine  │ Docker & Compose│
-└───────────────────┴───────────────────┴───────────────────┴─────────────────┘
-```
-
----
-
-## 🗄️ Database Schema & Polyglot Persistence
-
-### PostgreSQL Relational Entities (Auth, User, Nutrition, Fitness, Wellness)
-
-```
-┌─────────────────────────┐       ┌─────────────────────────┐
-│          users          │       │     health_profiles     │
-├─────────────────────────┤       ├─────────────────────────┤
-│ id (PK, BIGSERIAL)      │◄──┐   │ id (PK, BIGSERIAL)      │
-│ email (VARCHAR, UNIQUE) │   └───┤ user_id (FK, UNIQUE)    │
-│ password (VARCHAR)      │       │ age, gender             │
-│ name (VARCHAR)          │       │ height, weight          │
-│ role (VARCHAR)          │       │ lifestyle, goals        │
-│ created_at (TIMESTAMP)  │       │ allergies, conditions   │
-└─────────────────────────┘       │ sleep_pattern           │
-                                  │ dietary_preference      │
-                                  └─────────────────────────┘
-                                               │
-                                               ▼
-┌─────────────────────────┐       ┌─────────────────────────┐
-│     daily_health_data   │       │     nutrition_plans     │
-├─────────────────────────┤       ├─────────────────────────┤
-│ id (PK, BIGSERIAL)      │       │ id (PK, BIGSERIAL)      │
-│ user_id (FK)            │       │ user_id (FK)            │
-│ date (DATE)             │       │ daily_calories          │
-│ steps (INT)             │       │ protein_g, carbs_g      │
-│ sleep_hours (FLOAT)     │       │ fat_g                   │
-│ hydration_liters (FLOAT)│       │ meals (JSONB/TEXT)      │
-│ heart_rate (INT)        │       │ created_at (TIMESTAMP)  │
-│ weight (FLOAT)          │       └─────────────────────────┘
-└─────────────────────────┘
-```
-
-### MongoDB Document Collections (Reports & Clinical AI)
-
-```javascript
-// medical_reports Collection
-{
-  "_id": ObjectId("65e4f..."),
-  "userId": 4,
-  "fileName": "HealthVerse_AI_Sample_Medical_Report.pdf",
-  "fileType": "application/pdf",
-  "reportType": "GENERAL_BLOOD_TEST",
-  "reportDate": "2026-10-28",
-  "uploadDate": ISODate("2026-10-28T18:00:00Z"),
-  "description": "Routine annual comprehensive metabolic panel",
-  "fileData": BinData(0, "..."), // Raw PDF binary
-  "status": "ANALYZED"
-}
-
-// analysis_reports Collection
-{
-  "_id": ObjectId("65e5a..."),
-  "reportId": "65e4f...",
-  "userId": 4,
-  "summary": "Comprehensive panel reveals optimal lipid balance with mildly elevated fasting glucose.",
-  "keyFindings": [
-    "Fasting Blood Sugar: 104 mg/dL (Borderline High)",
-    "Hemoglobin: 14.8 g/dL (Normal)",
-    "Total Cholesterol: 182 mg/dL (Optimal)"
-  ],
-  "biomarkers": [
-    {"name": "Fasting Glucose", "value": "104", "unit": "mg/dL", "status": "ELEVATED", "referenceRange": "70-99"},
-    {"name": "Total Cholesterol", "value": "182", "unit": "mg/dL", "status": "NORMAL", "referenceRange": "<200"}
-  ],
-  "recommendations": [
-    "Reduce refined carbohydrate intake during evening meals.",
-    "Schedule a fasting insulin and HbA1c re-test in 90 days."
-  ],
-  "consultSpecialist": "Endocrinologist / General Physician",
-  "analyzedAt": ISODate("2026-10-28T18:05:00Z")
-}
-```
-
----
-
-## 📡 End-to-End API Documentation
-
-All client communications route through the **API Gateway** on port `8080`.
-
-### 1. Authentication Service (`/api/auth`)
-| HTTP Method | Route | Description | Auth Required |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/api/auth/register` | Register a new user account | No |
-| `POST` | `/api/auth/login` | Authenticate user and receive signed JWT | No |
-| `GET` | `/api/auth/validate` | Cryptographically validate active JWT | Yes (Bearer) |
-
-<details>
-<summary>👉 View Register & Login Payloads</summary>
-
-```json
-// POST /api/auth/register
-{
-  "email": "rgiridhar@gmail.com",
-  "password": "giridhar@1234",
-  "name": "R Giridhar"
-}
-
-// Response (200 OK):
-{
-  "accessToken": "eyJhbGciOiJIUzM4NCJ9...",
-  "tokenType": "Bearer",
-  "expiresIn": 86400,
-  "user": {
-    "id": 1,
-    "email": "rgiridhar@gmail.com",
-    "name": "R Giridhar",
-    "role": "USER"
-  }
-}
-```
-</details>
-
----
-
-### 2. User & Digital Health Twin Service (`/users`, `/api/health`, `/api/health-twin`)
-| HTTP Method | Route | Description | Auth Required |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/users/profile` | Retrieve personal demographic profile | Yes (Bearer) |
-| `GET` | `/api/health/profile` | Retrieve detailed medical baseline | Yes (Bearer) |
-| `PUT` | `/api/health/profile` | Upsert health profile & biometrics | Yes (Bearer) |
-| `POST` | `/users/daily-data` | Log daily health telemetry (steps, sleep, etc.) | Yes (Bearer) |
-| `GET` | `/users/daily-data/range` | Fetch metrics over a date range | Yes (Bearer) |
-| `GET` | `/api/health-twin/comprehensive`| **Fetch Full Digital Health Twin State** | Yes (Bearer) |
-
-<details>
-<summary>👉 View Comprehensive Digital Twin Response</summary>
-
-```json
-// GET /api/health-twin/comprehensive
-{
-  "userId": 1,
-  "name": "R Giridhar",
-  "healthScore": 84,
-  "healthScoreBreakdown": {
-    "cardiovascular": 88,
-    "metabolic": 82,
-    "lifestyle": 85,
-    "recovery": 81
-  },
-  "vitalMetrics": {
-    "weight": 82.0,
-    "bmi": 28.3,
-    "heartRate": 72,
-    "bloodPressure": "120/80"
-  },
-  "predictiveInsights": [
-    "Cardiovascular endurance has improved by 6% over the last 14 days.",
-    "Sleep irregularity detected mid-week; recommend fixing circadian sleep window."
-  ],
-  "adherenceRate": 91.5,
-  "lastUpdated": "2026-10-28T23:55:00Z"
-}
-```
-</details>
-
----
-
-### 3. Medical Report Service (`/api/reports`)
-| HTTP Method | Route | Description | Content-Type |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/api/reports/upload` | Upload PDF medical lab report | `multipart/form-data` |
-| `GET` | `/api/reports` | List all uploaded reports for user | `application/json` |
-| `GET` | `/api/reports/{id}` | Retrieve report metadata | `application/json` |
-| `GET` | `/api/reports/{id}/file` | Download original PDF binary | `application/pdf` |
-| `DELETE`| `/api/reports/{id}` | Remove medical report | `application/json` |
-
----
-
-### 4. AI Analysis Service (`/api/analysis`)
-| HTTP Method | Route | Description | Auth Required |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/api/analysis/reports/{reportId}/analyze` | Trigger AI extraction on uploaded report | Yes (Bearer) |
-| `GET` | `/api/analysis/reports/{reportId}` | Get structured analysis report & biomarkers | Yes (Bearer) |
-| `POST` | `/api/analysis/symptoms/analyze` | Perform clinical symptom triage | Yes (Bearer) |
-| `GET` | `/api/analysis/symptoms/history` | Retrieve user's logged symptom history | Yes (Bearer) |
-
----
-
-### 5. Nutrition & Fitness Service (`/api/nutrition`, `/api/fitness`)
-| HTTP Method | Route | Description | Auth Required |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/api/nutrition/plans/generate` | Generate custom nutrition plan via AI | Yes (Bearer) |
-| `GET` | `/api/nutrition/plans/latest` | Retrieve current active nutrition plan | Yes (Bearer) |
-| `POST` | `/api/fitness/plans/generate` | Generate customized workout plan via AI | Yes (Bearer) |
-| `GET` | `/api/fitness/plans/latest` | Retrieve current active workout plan | Yes (Bearer) |
-
----
-
-### 6. Wellness Service (`/api/wellness`)
-| HTTP Method | Route | Description | Auth Required |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/api/wellness/plans/generate` | Generate holistic wellness plan | Yes (Bearer) |
-| `GET` | `/api/wellness/plans/latest` | Retrieve latest wellness recommendations | Yes (Bearer) |
-| `GET` | `/api/wellness/insights` | Retrieve real-time predictive wellness insights | Yes (Bearer) |
-
----
-
-### 7. AI Agent Direct Engine (`:8000`)
-| HTTP Method | Route | Functionality |
-| :--- | :--- | :--- |
-| `GET` | `/health` | Service status, active provider, model info |
-| `POST` | `/api/v1/agents/chat` | Multi-turn contextual health conversation |
-| `POST` | `/api/v1/agents/health/analyze`| Raw symptom analysis & urgency triage |
-| `POST` | `/api/v1/agents/report/analyze`| Raw PDF text biomarker extraction |
-| `POST` | `/api/v1/agents/diet/generate` | Custom macro and meal plan generator |
-| `POST` | `/api/v1/agents/fitness/generate`| Exercise routine and progression generator |
-| `POST` | `/api/v1/agents/twin/analyze` | Multi-source digital twin scoring |
-
----
-
-## 📂 Repository Structure
-
-```
+```text
 HealthVerse-AI/
-├── .github/                              # CI/CD Workflows & GitHub configurations
-├── Review Presentations/                 # University Review PPTs & Milestone Slides
-│   ├── README                            # Presentation directory info
-│   └── SOA Project REVIEW-1.pptx         # Academic Review-1 Presentation Deck
-├── SOA-Skill Evaluation/                 # Coursework Lab Implementations
-│   ├── Experiment-1/                     # Restaurant & Order Microservices
-│   └── Experiment-2/                     # API Gateway, Cart & Product Microservices
-├── SOA_PROJECT_ABSTRACT.pdf              # Official University Project Abstract (KLH)
-├── HealthVerse_AI_Sample_Medical_Report.pdf # Clinical lab sample PDF for testing
-│
-├── ai-agents/                            # Python FastAPI AI Agent Subsystem
-│   ├── api/                              # Route endpoints
-│   │   ├── chat_direct.py                # Conversational AI assistant endpoint
-│   │   ├── diet.py                       # Nutrition & diet generation agent
-│   │   ├── fitness.py                    # Workout & exercise generation agent
-│   │   ├── health.py                     # Symptom analyzer & triage agent
-│   │   ├── planning.py                   # Integrated wellness planning agent
-│   │   ├── report.py                     # Medical PDF biomarker agent
-│   │   ├── twin.py                       # Digital Health Twin scoring agent
-│   │   └── wellness.py                   # Recovery & mental wellness agent
-│   ├── config/                           # Environment & provider settings
-│   ├── models/                           # Pydantic schemas (Request/Response DTOs)
-│   ├── services/                         # Core execution services
-│   │   └── ai_provider.py                # Unified Ollama / Gemini AI layer
-│   ├── Dockerfile                        # Container recipe for AI Agent
-│   ├── requirements.txt                  # Python runtime dependencies
-│   ├── main.py                           # FastAPI application entrypoint
-│   └── .env.example                      # Template for AI environment configuration
-│
-├── backend/                              # Spring Boot Multi-Module Microservices
-│   ├── discovery-server/                 # Netflix Eureka Service Registry (:8761)
-│   ├── api-gateway/                      # Spring Cloud Gateway (:8080)
-│   ├── auth-service/                     # Identity, RBAC, JWT tokens (:8081)
-│   ├── user-service/                     # Profiles, Daily Metrics & Twin (:8082)
-│   ├── report-service/                   # Medical Report PDF Storage (:8084)
-│   ├── ai-analysis-service/              # Clinical Triage & Report Analysis (:8085)
-│   ├── nutrition-fitness-service/        # Diet & Fitness Planning Engine (:8086)
-│   ├── wellness-service/                 # Predictive Insights & Habits (:8087)
-│   ├── docker-compose.yml                # Master Docker orchestration file
-│   ├── pom.xml                           # Root Maven Multi-Module build descriptor
-│   ├── DEMO.md                           # Step-by-step presentation demonstration guide
-│   └── .env.example                      # Master backend environment template
-│
-├── frontend/                             # React 18 + TypeScript Web Application
-│   ├── public/                           # Static assets & favicon
+├── ai-agents/                         # Python FastAPI Agentic AI Service (:8000)
+│   ├── api/                           # Endpoint routers (chat, diet, fitness, report, wellness)
+│   ├── config/                        # Pydantic settings & environment configuration
+│   ├── models/                        # Pydantic request/response schemas
+│   ├── services/                      # AI provider abstraction & deterministic biomarker extractor
+│   ├── Dockerfile                     # Containerization for Python AI agents
+│   └── main.py                        # FastAPI application entrypoint
+├── backend/                           # Distributed Spring Boot 3.3.4 Microservices
+│   ├── api-gateway/                   # Spring Cloud Gateway (:8080) — CORS & reverse proxy
+│   ├── discovery-server/              # Netflix Eureka Service Registry (:8761)
+│   ├── auth-service/                  # BCrypt password hashing & JWT issuer (:8081)
+│   ├── user-service/                  # Profiles, daily vitals ledger & twin aggregator (:8082)
+│   ├── report-service/                # MongoDB GridFS medical report binary storage (:8084)
+│   ├── ai-analysis-service/           # Symptom triage & report analysis coordinator (:8085)
+│   ├── nutrition-fitness-service/     # Mifflin-St Jeor nutrition & workout planner (:8086)
+│   ├── wellness-service/              # Predictive wellness & circadian analytics (:8087)
+│   ├── docker-compose.yml             # Complete 12-container orchestration manifest
+│   └── pom.xml                        # Parent multi-module Maven configuration
+├── frontend/                          # React 18 + Vite + TypeScript Client (:5173)
 │   ├── src/
-│   │   ├── assets/                       # Branding logos and vector graphics
-│   │   ├── components/                   # Reusable UI components & modals
-│   │   │   ├── NutritionPreferencesModal.tsx # Diet customizer dialog
-│   │   │   └── WellnessPreferencesModal.tsx  # Wellness preferences dialog
-│   │   ├── context/                      # React Context providers (AuthContext)
-│   │   ├── layouts/                      # App Shell (DashboardLayout, AuthLayout)
-│   │   ├── pages/                        # Screen views
-│   │   │   ├── Landing.tsx               # Product landing page & feature showcase
-│   │   │   ├── Login.tsx                 # User authentication
-│   │   │   ├── Register.tsx              # Account registration
-│   │   │   ├── Dashboard.tsx             # Main biometric cockpit
-│   │   │   ├── DigitalHealthTwin.tsx     # 3D/Interactive Digital Health Twin view
-│   │   │   ├── SymptomAnalyzer.tsx       # Symptom checker & triage screen
-│   │   │   ├── Reports.tsx               # PDF Report upload & biomarker inspector
-│   │   │   ├── Nutrition.tsx             # AI meal planning & macro tracker
-│   │   │   ├── Fitness.tsx               # Workout routines & exercise schedule
-│   │   │   ├── Wellness.tsx              # Mental recovery, habits & breathing tool
-│   │   │   ├── AIChat.tsx                # Conversational AI assistant chat
-│   │   │   ├── HealthProfile.tsx         # Baseline medical profile management
-│   │   │   └── Settings.tsx              # App preferences & account management
-│   │   ├── services/                     # Axios API clients for each microservice
-│   │   ├── types/                        # TypeScript type definitions & interfaces
-│   │   ├── App.tsx                       # Main router configuration
-│   │   └── main.tsx                      # Vite React DOM entrypoint
-│   ├── package.json                      # Frontend dependencies & scripts
-│   ├── tailwind.config.js                # Tailwind styling configurations
-│   ├── vite.config.ts                    # Vite build configuration
-│   └── .env.example                      # Frontend environment template
-│
-├── seed_demo_user.py                     # Realistic 30-day health telemetry seeder
-├── test_all_features.py                  # End-to-end automated API test suite
-├── test_ai.py                            # Standalone AI provider connectivity test
-├── deploy_ai.bat                         # Windows batch launch script for AI agents
-├── .gitignore                            # Git exclusion rules
-└── README.md                             # Comprehensive project documentation
+│   │   ├── components/                # Reusable UI components & React Portal modals
+│   │   ├── context/                   # Auth & application state providers
+│   │   ├── hooks/                     # Custom React hooks (useAuth)
+│   │   ├── pages/                     # Application views (Dashboard, Twin, Reports, Chat, etc.)
+│   │   ├── services/                  # Axios HTTP client service abstractions
+│   │   └── types/                     # Shared TypeScript interface definitions
+│   ├── index.html                     # Single-page application entrypoint
+│   └── package.json                   # Frontend dependencies & scripts
+├── tests/                             # Comprehensive automated test suites
+│   ├── test_healthverse_suite.py      # End-to-end 17-point automated verification suite
+│   └── test_all_features.py           # Multi-service integration validation script
+├── HealthVerse_AI_Sample_Medical_Report.pdf # Genuine sample clinical laboratory report for testing
+└── README.md                          # Enterprise documentation & architectural guide
 ```
 
 ---
 
-## 🚀 Installation & Quickstart Guide
+## 🛠️ Installation and Setup
 
-### Option A: One-Click Docker Compose (Recommended)
+### Prerequisites
+- **Git**: 2.40+
+- **Java**: OpenJDK 21 LTS
+- **Node.js**: v18.x or v20.x with npm
+- **Python**: 3.11+
+- **Docker & Docker Compose**: Docker Desktop 24+
+- **Ollama**: Installed locally on host ([ollama.com](https://ollama.com))
 
-This single command starts the entire system (Databases, Discovery Server, API Gateway, 6 Spring Microservices, and the Python AI Agent Service).
-
-#### 1. Prerequisites
-- **Docker Desktop** installed with Docker Compose enabled.
-- **Ollama** installed on your host machine ([ollama.com/download](https://ollama.com/download)).
-
-#### 2. Start Local Ollama Model
-In a standard host terminal, pull the recommended model:
+### 1. Download Local AI Models
+Open a terminal and pull the recommended fast inference model:
 ```bash
-ollama run qwen2.5:7b
-```
-*(Ollama will run in the background on port `11434`)*.
+# Recommended default model (2.2 GB VRAM footprint - 100% GPU resident)
+ollama pull qwen2.5:3b
 
-#### 3. Configure Environment Variables
-Copy the template files:
-```bash
-# In backend/
-cp backend/.env.example backend/.env
-
-# In ai-agents/
-cp ai-agents/.env.example ai-agents/.env
-
-# In frontend/
-cp frontend/.env.example frontend/.env
+# Optional larger model (5.2 GB resident)
+ollama pull qwen2.5:7b
 ```
 
-#### 4. Spin Up All Microservices
-From the project root:
+### 2. Clone Repository
+```bash
+git clone https://github.com/rgiridhar1008/HealthVerse-AI.git
+cd HealthVerse-AI
+```
+
+### 3. Option A: One-Click Docker Compose (Recommended)
+Launch the entire 12-container ecosystem with a single command:
 ```bash
 cd backend
 docker compose up -d --build
 ```
-*Verification*: Check container status with `docker compose ps`. Within 60–90 seconds, all microservices will be healthy and registered with Eureka.
 
-#### 5. Launch the Frontend
-In a separate terminal:
+Verify all containers are active and healthy:
 ```bash
-cd frontend
-npm install
-npm run dev
-```
-Open your browser at: **`http://localhost:5173`**
-
----
-
-### Option B: Bare-Metal Local Development Setup
-
-If developing individual services locally without full Docker containerization:
-
-#### Step 1: Infrastructure Services
-Spin up only the databases and cache via Docker:
-```bash
-docker run -d --name healthverse-postgres -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=healthverse postgres:15-alpine
-docker run -d --name healthverse-mongo -p 27017:27017 mongo:6
-docker run -d --name healthverse-redis -p 6379:6379 redis:7-alpine
+docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
 ```
 
-#### Step 2: Launch Eureka Discovery Server
-```bash
-cd backend/discovery-server
-./mvnw spring-boot:run
-```
-*(Available at `http://localhost:8761`)*
+### 4. Option B: Bare-Metal Local Development Setup
 
-#### Step 3: Launch Spring Cloud API Gateway
-```bash
-cd backend/api-gateway
-./mvnw spring-boot:run
-```
-*(Listening on `http://localhost:8080`)*
-
-#### Step 4: Launch Core Spring Boot Microservices
-Open separate terminals for each service:
-```bash
-# Terminal 1: Auth Service (Port 8081)
-cd backend/auth-service && ./mvnw spring-boot:run
-
-# Terminal 2: User Service (Port 8082)
-cd backend/user-service && ./mvnw spring-boot:run
-
-# Terminal 3: Report Service (Port 8084)
-cd backend/report-service && ./mvnw spring-boot:run
-
-# Terminal 4: AI Analysis Service (Port 8085)
-cd backend/ai-analysis-service && ./mvnw spring-boot:run
-
-# Terminal 5: Nutrition & Fitness Service (Port 8086)
-cd backend/nutrition-fitness-service && ./mvnw spring-boot:run
-
-# Terminal 6: Wellness Service (Port 8087)
-cd backend/wellness-service && ./mvnw spring-boot:run
-```
-
-#### Step 5: Launch Python AI Agent Service
+#### Start Python AI Agent Service
 ```bash
 cd ai-agents
 python -m venv venv
-# On Windows:
+# Windows:
 .\venv\Scripts\activate
-# On Linux/macOS:
+# Linux/macOS:
 source venv/bin/activate
 
 pip install -r requirements.txt
-python main.py
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
-*(Listening on `http://localhost:8000`)*
 
-#### Step 6: Launch React Frontend
+#### Start Spring Boot Backend Cluster
+From the `backend` directory, build all microservices:
+```bash
+cd backend
+mvn clean compile package -DskipTests
+```
+Launch services in order:
+1. `discovery-server` (:8761)
+2. `api-gateway` (:8080)
+3. `auth-service` (:8081)
+4. `user-service` (:8082)
+5. `report-service` (:8084)
+6. `ai-analysis-service` (:8085)
+7. `nutrition-fitness-service` (:8086)
+8. `wellness-service` (:8087)
+
+#### Start React Frontend
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
+### 5. Application Access Endpoints
+| Interface / Service | Host / URL | Purpose |
+| :--- | :--- | :--- |
+| **Web Application Client** | `http://localhost:5173` | React 18 Single-Page Dashboard |
+| **API Gateway Ingress** | `http://localhost:8080` | Unified Reverse Proxy & Auth Gateway |
+| **Eureka Service Registry** | `http://localhost:8761` | Dynamic Microservice Status Dashboard |
+| **Python AI Agent Service** | `http://localhost:8000` | FastAPI Interactive Swagger Docs (`/docs`) |
+
 ---
 
-## 🧪 Database & Demo Seeding
+## 🔐 Environment Variables
 
-To experience the full power of the **Digital Health Twin** with realistic 30-day biometrics, historical blood pressures, steps, and caloric trends, execute the automated seeding script:
+HealthVerse AI separates configuration from code. Copy example templates to create local `.env` files:
 
+### AI Agents (`ai-agents/.env`)
 ```bash
-python seed_demo_user.py
+HOST=0.0.0.0
+PORT=8000
+AI_PROVIDER=ollama
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=qwen2.5:3b # Configurable: qwen2.5:3b (default fast) or qwen2.5:7b
+
+# Optional Cloud Fallback
+GEMINI_API_KEY=your_gemini_api_key_here
+GEMINI_MODEL=gemini-1.5-flash
 ```
 
-### Seeded Demo Credentials:
-- **Email**: `rgiridhar@gmail.com`
-- **Password**: `giridhar@1234`
-- **Name**: `R Giridhar`
-- **Generated Data**:
-  - Demographics: Age 20, Male, 170 cm, 82 kg.
-  - 30 consecutive days of dynamic telemetry (steps fluctuating between 6,000–12,500, sleep logs between 6.5–8.5 hours, hydration between 2.0–3.5 L, resting heart rates).
-  - Pre-seeded health goals and dietary preferences.
-
----
-
-## 🔬 Automated Verification & Testing
-
-HealthVerse AI includes automated end-to-end integration test suites to validate that all services communicate through the Gateway correctly:
-
-### 1. Full Features Automated Suite
+### Backend (`backend/.env`)
 ```bash
-python test_all_features.py
+DB_HOST=postgresql
+DB_PORT=5432
+DB_NAME=healthverse
+DB_USERNAME=postgres
+DB_PASSWORD=your_secure_postgres_password_here
+MONGODB_URI=mongodb://mongodb:27017/healthverse
+REDIS_HOST=redis
+REDIS_PORT=6379
+EUREKA_SERVER_URL=http://discovery-server:8761/eureka/
+JWT_SECRET=YourSuperSecureSecretKeyForJWTAuthentication2026!
+CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
+OLLAMA_MODEL=qwen2.5:3b
 ```
-*What this validates*:
-1. Authenticates against `/api/auth/login`.
-2. Generates a personalized wellness plan via `/api/wellness/plans/generate`.
-3. Synthesizes a structured workout routine via `/api/fitness/plans/generate`.
-4. Creates a macronutrient nutrition regimen via `/api/nutrition/plans/generate`.
-5. Uploads a sample PDF report to `/api/reports/upload` and triggers AI biomarker extraction via `/api/analysis/reports/{id}/analyze`.
 
-### 2. Standalone AI Agent Service Test
+### Frontend (`frontend/.env`)
 ```bash
-python test_ai.py
+VITE_API_BASE_URL=http://localhost:8080
 ```
-*Validates*: Direct HTTP connectivity to the local Ollama LLM / Gemini provider and verifies JSON completion schemas.
 
 ---
 
-## 🔒 Security, Privacy & Ethical Compliance
+## 📖 API Documentation
 
-### 1. Data Sovereignty & Local AI Execution
-- Traditional healthcare applications transmit sensitive Protected Health Information (PHI) to public cloud APIs, risking unauthorized third-party telemetry and regulatory non-compliance.
-- HealthVerse AI routes all clinical reasoning and biomarker extraction through a **local Ollama container (`qwen2.5:7b`)**. Patient health parameters and medical PDF text **never leave the user's host infrastructure**.
+All client requests flow through the **API Gateway** on port `8080`.
 
-### 2. Stateless Token-Based Security
-- Cryptographic JWT tokens signed with SHA-384/256 algorithms.
-- Custom `JwtAuthenticationFilter` on all resource services extracts authenticated identities directly from claims, mitigating Insecure Direct Object Reference (IDOR) vulnerabilities.
-- Password hashes are computed with multi-round BCrypt salt derivation.
+### Authentication Service (`/api/auth`)
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :---: |
+| `POST` | `/api/auth/register` | Register new user account | No |
+| `POST` | `/api/auth/login` | Authenticate user & issue stateless JWT | No |
 
-### 3. OWASP Hardening & Network Isolation
-- Spring Cloud Gateway acts as a reverse-proxy shield, preventing direct external access to internal microservice ports (`8081–8087`).
-- Sensitive Spring Boot Actuator endpoints (`/actuator/env`, `/actuator/heapdump`) are strictly restricted.
-- Granular Cross-Origin Resource Sharing (CORS) configurations safeguard against cross-site script request tampering.
+### User & Twin Service (`/api/health`, `/users`)
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :---: |
+| `GET` | `/api/health/profile` | Retrieve authenticated user's health profile | Bearer JWT |
+| `PUT` | `/api/health/profile` | Upsert demographic and physiological profile | Bearer JWT |
+| `POST` | `/api/health/daily` | Idempotent daily vitals tracking record | Bearer JWT |
+| `GET` | `/api/health-twin/status` | Retrieve aggregate Digital Health Twin score | Bearer JWT |
+| `GET` | `/api/health-twin/comprehensive`| Retrieve longitudinal vitals & medication ledger | Bearer JWT |
 
-### 4. Medical Ethics & Disclaimer
-> [!IMPORTANT]
-> **HealthVerse AI is an academic and demonstrative decision-support ecosystem. It does NOT provide formal medical diagnoses, clinical treatment prescriptions, or emergency healthcare dispatch.**
-> All AI-generated outputs—including the Symptom Analyzer, Biomarker Extractor, and Nutrition Plans—are provided solely for informational and wellness awareness purposes. Users must always seek professional counsel from licensed healthcare practitioners before making clinical or medical decisions.
+### Medical Report Service (`/api/reports`)
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :---: |
+| `POST` | `/api/reports/upload` | Upload PDF report to MongoDB GridFS | Bearer JWT |
+| `GET` | `/api/reports` | List all historical reports uploaded by user | Bearer JWT |
+| `GET` | `/api/reports/{id}` | Download raw report metadata / file stream | Bearer JWT |
+
+### AI Analysis Service (`/api/analysis`)
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :---: |
+| `POST` | `/api/analysis/reports/{id}/analyze` | Trigger asynchronous report extraction & synthesis | Bearer JWT |
+| `GET` | `/api/analysis/reports/{id}` | Poll report analysis result & active stage | Bearer JWT |
+| `POST` | `/api/analysis/symptoms` | Context-aware clinical symptom triage | Bearer JWT |
+| `POST` | `/api/analysis/chat` | Interactive multi-turn health assistant chat | Bearer JWT |
+
+### Nutrition & Fitness Service (`/api/nutrition`, `/api/fitness`)
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :---: |
+| `POST` | `/api/nutrition/plans/generate` | Generate Mifflin-St Jeor personalized nutrition plan | Bearer JWT |
+| `GET` | `/api/nutrition/plans` | Retrieve user nutrition plan history | Bearer JWT |
+| `POST` | `/api/fitness/plans/generate` | Generate MET-calculated personalized workout plan | Bearer JWT |
+| `GET` | `/api/fitness/plans` | Retrieve user fitness plan history | Bearer JWT |
+
+### Wellness Service (`/api/wellness`)
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :---: |
+| `GET` | `/api/wellness/insights` | Retrieve 14-day predictive circadian wellness insights | Bearer JWT |
+| `POST` | `/api/wellness/plans` | Generate mindfulness and habit intervention plans | Bearer JWT |
 
 ---
 
-## 🗺️ Future Roadmap
+## 🧪 Automated Verification & Testing
 
-- [ ] **Wearable IoT Stream Ingestion**: Direct MQTT/Bluetooth pairing with Apple HealthKit, Google Health Connect, and Garmin smartwatches.
-- [ ] **DICOM Medical Imaging Agent**: Integration of lightweight vision models for chest X-ray and MRI preliminary anomaly detection.
-- [ ] **Federated Learning for Risk Models**: Decentralized on-device training for early cardiovascular anomaly prediction without raw data pooling.
-- [ ] **FHIR / HL7 Interoperability**: Exporting user Digital Health Twin records to international FHIR-compliant electronic health record (EHR) systems.
-- [ ] **Voice-Activated Health Interface**: Hands-free conversational triage using local Whisper speech-to-text models.
+HealthVerse AI features a fully automated 17-point integration test suite that exercises all microservices, databases, and AI endpoints end-to-end.
+
+To run the verification suite against the active cluster:
+```bash
+python tests/test_healthverse_suite.py
+```
+
+### Verified Test Suite Results
+```text
+============================================================
+ HEALTHVERSE AI -- AUTOMATED COMPREHENSIVE TEST SUITE
+ Gateway URL: http://localhost:8080
+============================================================
+[OK] PASS: 1. User Registration
+[OK] PASS: 2. User Login & JWT Issuance
+[OK] PASS: 3. Update Health Profile
+[OK] PASS: 4. Verify Profile Persistence After Refresh
+[OK] PASS: 5. Log Daily Vitals
+[OK] PASS: 6. Daily Vitals Idempotent Upsert
+[OK] PASS: 7. Add Medication Record
+[OK] PASS: 8. List Active Medications
+[OK] PASS: 9. Digital Health Twin Score Calculation
+[OK] PASS: 10. Digital Health Twin Real Data Sync
+[OK] PASS: 11. Nutrition Plan Query
+[OK] PASS: 12. Fitness Plan Query
+[OK] PASS: 13. Predictive Wellness Insights
+[OK] PASS: 14. AI Direct Chat
+[OK] PASS: 15. Symptom Analyzer with Real Profile Context
+[OK] PASS: 16. Medical Report PDF GridFS Upload
+[OK] PASS: 17. Trigger Medical Report Analysis
+
+============================================================
+ TEST SUMMARY: 17/17 PASSED (100% HEALTH VERIFIED)
+============================================================
+```
 
 ---
 
-## 👥 Authors & Acknowledgments
+## 🔮 Future Roadmap
 
-Developed as a flagship **Service-Oriented Architecture & Microservices** initiative at **KL University (KLH)**, Department of Computer Science & Engineering.
-
-- **P. Pranathi** — *Architecture, Microservices, Core Backend Services* — ID: `2420030043`
-- **R. L. S. Giridhar** — *Agentic AI Architecture, Gateway, Frontend & Full-Stack Integration* — ID: `2420030171`
-- **D. Krishna Chaitanya** — *Data Persistence, Analytics & Quality Assurance* — ID: `2420090077`
-
-Special gratitude to **Dr. Srikanth Cherukuvada** for his mentorship and guidance in Service-Oriented Architecture, enterprise patterns, and distributed system design.
+- [ ] **DICOM Medical Imaging**: Support for CT/MRI scan slice visualization via WebGL.
+- [ ] **Wearable API Integrations**: Direct Apple HealthKit and Google Health Connect sync.
+- [ ] **Federated Learning Nodes**: Distributed on-device fine-tuning for privacy-preserving disease risk prediction.
+- [ ] **HL7 / FHIR Interoperability**: Enterprise electronic health record (EHR) data export standards.
 
 ---
 
-<div align="center">
-  <sub>HealthVerse AI • Built with ❤️ for Predictive Health & Wellness • KL University 2026-2027</sub>
-</div>
+## ⚖️ Medical Disclaimer
+
+> [!CAUTION]
+> **HealthVerse AI is an educational, research, and informational software ecosystem developed for academic evaluation.**
+> It does **not** provide professional medical diagnosis, treatment advice, or formal clinical prescriptions. The AI-generated insights, symptom triage categories, and biomarker interpretations must never replace the clinical judgment of a qualified medical practitioner. If you are experiencing a medical emergency, immediately contact your local emergency healthcare provider.
+
+---
+
+## 👥 Contributors & Acknowledgements
+
+Developed with dedication at **KL University (KLH)** for the **SOA Programming and Microservices (24SDCS03)** course curriculum.
+
+### Project Team
+- **P. Pranathi** — ID: `2420030043`
+- **R. L. S. Giridhar** — ID: `2420030171`
+- **D. Krishna Chaitanya** — ID: `2420090077`
+
+### Project Guidance
+- **Dr. Srikanth Cherukuvada** — Department of Computer Science & Engineering, KL University.
+
+---
+*HealthVerse AI © 2026–2027. All rights reserved.*

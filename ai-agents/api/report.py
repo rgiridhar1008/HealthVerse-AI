@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, UploadFile, File
 from models.schemas import ReportAnalyzeRequest, ReportAnalyzeResponse, ReportObservation, AbnormalValue
 from services.ai_provider import ai_provider, AIProviderError
+from services.biomarker_extractor import extract_biomarkers
 import PyPDF2
 import io
 import json
@@ -30,16 +31,102 @@ Do NOT include markdown formatting outside the JSON object. Output valid JSON on
 async def perform_analysis(text: str) -> dict:
     start = time.time()
 
-    # Truncate text to avoid token limits for very large PDFs, but retain sufficient context
-    if len(text) > 12000:
-        text = text[:12000] + "... [TRUNCATED]"
+    # Clean redundant whitespace to maximize dense biomarker content
+    cleaned_text = re.sub(r'\n\s*\n+', '\n', text.strip())
+    cleaned_text = re.sub(r'[ \t]+', ' ', cleaned_text)
 
-    prompt = f"Analyze this medical report thoroughly and extract structured data:\n\n{text}"
+    # 1. Deterministic Biomarker Pre-Extraction (preserves exact values, units, reference ranges)
+    bio_result = extract_biomarkers(cleaned_text)
+    
+    if bio_result["findings"]:
+        print(f"[BIOMARKER-EXTRACTOR] Extracted {len(bio_result['findings'])} biomarkers, {len(bio_result['abnormal_values'])} abnormal in 0ms")
+        
+        abnormal_summary = "\n".join([
+            f"- {a['marker']}: {a['value']} (Ref: {a['referenceRange']}, Status: {a['status']})"
+            for a in bio_result["abnormal_values"]
+        ]) if bio_result["abnormal_values"] else "All measured parameters within normal laboratory limits."
+        
+        all_markers_summary = ", ".join([f"{f['name']} ({f['value']})" for f in bio_result["findings"][:15]])
+        
+        synth_prompt = (
+            f"The following biomarkers were deterministically extracted from the patient's lab report:\n"
+            f"Abnormal Findings:\n{abnormal_summary}\n\n"
+            f"Sample of Tested Markers: {all_markers_summary}\n\n"
+            f"Provide a clinical synthesis in JSON format:\n"
+            f"{{\n"
+            f'  "summary": "1-2 sentences summarizing clinical findings and general health status",\n'
+            f'  "explanations": "Plain language clinical explanation of what the abnormal and key findings indicate",\n'
+            f'  "recommendations": ["3-4 specific, actionable lifestyle, dietary, or clinical follow-up recommendations"],\n'
+            f'  "abnormal_explanations": {{"Marker Name": "Specific clinical reason/context for abnormal level"}}\n'
+            f"}}"
+        )
+        
+        synth_system = (
+            "You are an expert Clinical Pathologist and Medical AI. "
+            "Interpret the extracted laboratory findings concisely and professionally. "
+            "Output valid JSON only matching the schema."
+        )
+        
+        try:
+            llm_synth = await ai_provider.generate_json(
+                prompt=synth_prompt,
+                system_prompt=synth_system,
+                max_tokens=400,
+                temperature=0.1,
+                feature="report"
+            )
+        except Exception as e:
+            print(f"[AI-AGENT-WARN] LLM synthesis failed, using fallback clinical defaults: {e}")
+            llm_synth = {}
+
+        abnormal_exps = llm_synth.get("abnormal_explanations", {}) if isinstance(llm_synth.get("abnormal_explanations"), dict) else {}
+        for ab in bio_result["abnormal_values"]:
+            marker = ab["marker"]
+            if marker in abnormal_exps:
+                ab["explanation"] = str(abnormal_exps[marker])
+
+        raw_recs = llm_synth.get("recommendations", [])
+        recs = []
+        if isinstance(raw_recs, list) and raw_recs:
+            recs = [str(r) for r in raw_recs if r]
+        else:
+            recs = [
+                "Schedule a follow-up consultation with your physician to discuss these findings.",
+                "Review lifestyle, diet, and hydration habits tailored to the identified biomarkers."
+            ]
+
+        summary_text = str(llm_synth.get("summary") or (
+            f"Lab report evaluated: {len(bio_result['abnormal_values'])} markers require clinical attention."
+            if bio_result["abnormal_values"]
+            else "All evaluated laboratory biomarkers are within optimal clinical reference ranges."
+        ))
+
+        explanation_text = str(llm_synth.get("explanations") or summary_text)
+
+        elapsed = int((time.time() - start) * 1000)
+        print(f"[REPORT-TIMING] total_optimized_analysis_time={elapsed}ms")
+
+        return {
+            "summary": summary_text,
+            "findings": bio_result["findings"],
+            "abnormal_values": bio_result["abnormal_values"],
+            "normal_values": bio_result["normal_values"],
+            "explanations": explanation_text,
+            "recommendations": recs,
+            "disclaimer": "This analysis is for informational purposes only. Consult a healthcare professional."
+        }
+
+    # Fallback to general LLM extraction if no standard structured biomarkers were matched
+    print("[REPORT-FALLBACK] No standard biomarkers matched by regex; using full LLM extraction")
+    if len(cleaned_text) > 6000:
+        cleaned_text = cleaned_text[:6000] + "\n... [ADDITIONAL LAB TEXT TRUNCATED]"
+
+    prompt = f"Analyze this medical report thoroughly and extract structured data:\n\n{cleaned_text}"
 
     raw_data = await ai_provider.generate_json(
         prompt=prompt,
         system_prompt=SYSTEM_PROMPT,
-        max_tokens=2048,
+        max_tokens=1024,
         temperature=0.1,
         feature="report"
     )

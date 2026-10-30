@@ -21,6 +21,7 @@ public class HealthProfileDto {
     private String goals;
     private String allergies;
     private String conditions;
+    private String dietaryPreference;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

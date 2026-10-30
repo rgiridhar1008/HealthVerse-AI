@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, Save, AlertCircle, Loader2, Utensils, Info } from 'lucide-react';
+import { Save, AlertCircle, Loader2, Utensils, Info } from 'lucide-react';
 import { healthApi } from '../services/healthApi';
 import { HealthProfile } from '../types/health';
+import Modal from './Modal';
 
 interface NutritionPreferencesModalProps {
   isOpen: boolean;
@@ -22,7 +22,7 @@ const NutritionPreferencesModal: React.FC<NutritionPreferencesModalProps> = ({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   
-  // Local state for the preferences we care about
+  // Local state for the preferences
   const [dietaryPreference, setDietaryPreference] = useState<HealthProfile['dietaryPreference']>('');
   const [allergies, setAllergies] = useState('');
   const [fitnessGoal, setFitnessGoal] = useState<HealthProfile['fitnessGoal']>('');
@@ -39,9 +39,9 @@ const NutritionPreferencesModal: React.FC<NutritionPreferencesModalProps> = ({
     try {
       const data = await healthApi.getProfile(userId);
       setProfile(data);
-      setDietaryPreference(data.dietaryPreference || '');
+      setDietaryPreference(data.dietaryPreference || 'None');
       setAllergies(data.allergies || '');
-      setFitnessGoal(data.fitnessGoal || '');
+      setFitnessGoal(data.fitnessGoal || 'Maintenance');
     } catch (err) {
       setError('Failed to load profile data.');
     } finally {
@@ -49,7 +49,8 @@ const NutritionPreferencesModal: React.FC<NutritionPreferencesModalProps> = ({
     }
   };
 
-  const handleSave = async () => {
+  const handleSave = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (!profile) return;
     
     setSaving(true);
@@ -72,142 +73,126 @@ const NutritionPreferencesModal: React.FC<NutritionPreferencesModalProps> = ({
     }
   };
 
-  if (!isOpen) return null;
+  const footer = !loading ? (
+    <>
+      <button
+        type="button"
+        onClick={onClose}
+        disabled={saving}
+        className="px-5 py-2.5 text-sm font-bold text-slate-700 bg-slate-100 rounded-xl hover:bg-slate-200 transition-colors disabled:opacity-50"
+      >
+        Cancel
+      </button>
+      <button
+        type="submit"
+        form="nutrition-preferences-form"
+        onClick={handleSave}
+        disabled={saving}
+        className="px-6 py-2.5 text-sm font-bold text-white bg-orange-500 rounded-xl hover:bg-orange-600 transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm shadow-orange-200"
+      >
+        {saving ? (
+          <>
+            <Loader2 className="w-4 h-4 animate-spin" />
+            Saving & Generating...
+          </>
+        ) : (
+          <>
+            <Save className="w-4 h-4" />
+            Save & Regenerate
+          </>
+        )}
+      </button>
+    </>
+  ) : null;
 
   return (
-    <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center px-4 pt-4 pb-20 text-center sm:p-0">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 transition-opacity bg-slate-900/50 backdrop-blur-sm"
-          onClick={onClose}
-        />
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Nutrition Preferences"
+      subtitle="Tailor your daily dietary profile and culinary choices"
+      icon={
+        <div className="p-2 bg-orange-100 text-orange-600 rounded-xl">
+          <Utensils className="w-5 h-5" />
+        </div>
+      }
+      footer={footer}
+      maxWidth="lg"
+    >
+      {error && (
+        <div className="flex items-center gap-2 p-3 mb-4 text-sm font-medium text-red-600 bg-red-50 rounded-xl">
+          <AlertCircle className="w-4 h-4 shrink-0" />
+          {error}
+        </div>
+      )}
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative inline-block w-full max-w-lg p-6 overflow-hidden text-left align-bottom transition-all transform bg-white shadow-2xl rounded-2xl sm:my-8 sm:align-middle"
-        >
-          <div className="flex items-center justify-between mb-5">
-            <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-              <Utensils className="w-5 h-5 text-orange-500" />
-              Nutrition Preferences
-            </h3>
-            <button
-              onClick={onClose}
-              className="p-2 text-slate-400 transition-colors hover:text-slate-600 hover:bg-slate-100 rounded-xl"
+      {loading ? (
+        <div className="flex flex-col items-center justify-center py-12 space-y-4">
+          <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
+          <p className="text-sm font-medium text-slate-500">Loading preferences...</p>
+        </div>
+      ) : (
+        <form id="nutrition-preferences-form" onSubmit={handleSave} className="space-y-5">
+          <div>
+            <label className="block text-sm font-semibold text-slate-700 mb-1">
+              Dietary Preference & Cuisine
+            </label>
+            <select
+              value={dietaryPreference || 'None'}
+              onChange={(e) => setDietaryPreference(e.target.value as HealthProfile['dietaryPreference'])}
+              className="w-full px-4 py-2.5 text-slate-900 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
             >
-              <X className="w-5 h-5" />
-            </button>
+              <option value="None">Standard Balanced Diet</option>
+              <option value="Vegetarian">Indian Vegetarian (Lacto-Vegetarian / Dal, Sabzi, Paneer)</option>
+              <option value="Non-Vegetarian">Indian Non-Vegetarian (Chicken, Fish, Eggs, Mutton)</option>
+              <option value="South Indian Vegetarian">South Indian Vegetarian (Idli, Dosa, Sambar, Rasam, Curd Rice)</option>
+              <option value="North Indian Vegetarian">North Indian Vegetarian (Roti, Dal Tadka, Rajma, Chana, Paneer)</option>
+              <option value="Eggetarian">Eggetarian (Vegetarian + Eggs)</option>
+              <option value="Vegan">Vegan (100% Plant-Based)</option>
+              <option value="Keto">Keto / Low-Carb</option>
+              <option value="Mediterranean">Mediterranean / Heart Healthy</option>
+            </select>
           </div>
 
-          {error && (
-            <div className="flex items-center gap-2 p-3 mb-4 text-sm font-medium text-red-600 bg-red-50 rounded-xl">
-              <AlertCircle className="w-4 h-4 shrink-0" />
-              {error}
-            </div>
-          )}
+          <div>
+            <label className="block text-sm font-semibold text-slate-700 mb-1">
+              Allergies / Dietary Exclusions
+            </label>
+            <input
+              type="text"
+              value={allergies}
+              onChange={(e) => setAllergies(e.target.value)}
+              placeholder="e.g. Peanuts, Dairy, Gluten, Mustard, Shellfish"
+              className="w-full px-4 py-2.5 text-slate-900 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
+            />
+            <p className="mt-1 text-xs text-slate-500">Leave blank if you have no dietary restrictions.</p>
+          </div>
 
-          {loading ? (
-            <div className="flex flex-col items-center justify-center py-12 space-y-4">
-              <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
-              <p className="text-sm font-medium text-slate-500">Loading preferences...</p>
-            </div>
-          ) : (
-            <div className="space-y-5">
-              
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">
-                  Dietary Preference
-                </label>
-                <select
-                  value={dietaryPreference}
-                  onChange={(e) => setDietaryPreference(e.target.value as HealthProfile['dietaryPreference'])}
-                  className="w-full px-4 py-2 text-slate-900 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
-                >
-                  <option value="">Select...</option>
-                  <option value="None">None</option>
-                  <option value="Vegetarian">Vegetarian</option>
-                  <option value="Vegan">Vegan</option>
-                  <option value="Keto">Keto</option>
-                  <option value="Paleo">Paleo</option>
-                  <option value="Mediterranean">Mediterranean</option>
-                </select>
-              </div>
+          <div>
+            <label className="block text-sm font-semibold text-slate-700 mb-1">
+              Primary Nutrition Goal
+            </label>
+            <select
+              value={fitnessGoal || 'Maintenance'}
+              onChange={(e) => setFitnessGoal(e.target.value as HealthProfile['fitnessGoal'])}
+              className="w-full px-4 py-2.5 text-slate-900 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
+            >
+              <option value="Weight Loss">Weight Loss (Caloric Deficit)</option>
+              <option value="Maintenance">Maintenance (Balanced Energy)</option>
+              <option value="Muscle Gain">Muscle Gain (High Protein Hypertrophy)</option>
+              <option value="Endurance">Endurance & Athletic Energy</option>
+            </select>
+          </div>
 
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">
-                  Allergies / Intolerances
-                </label>
-                <input
-                  type="text"
-                  value={allergies}
-                  onChange={(e) => setAllergies(e.target.value)}
-                  placeholder="e.g., Peanuts, Dairy, Gluten (comma separated)"
-                  className="w-full px-4 py-2 text-slate-900 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
-                />
-                <p className="mt-1 text-xs text-slate-500">Leave blank if none.</p>
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">
-                  Primary Nutrition Goal
-                </label>
-                <select
-                  value={fitnessGoal}
-                  onChange={(e) => setFitnessGoal(e.target.value as HealthProfile['fitnessGoal'])}
-                  className="w-full px-4 py-2 text-slate-900 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
-                >
-                  <option value="">Select Goal...</option>
-                  <option value="Weight Loss">Weight Loss</option>
-                  <option value="Maintenance">Maintenance</option>
-                  <option value="Muscle Gain">Muscle Gain</option>
-                  <option value="Endurance">Endurance</option>
-                </select>
-              </div>
-
-              <div className="flex items-start gap-3 p-4 bg-orange-50 rounded-xl border border-orange-100 mt-2">
-                <Info className="w-5 h-5 text-orange-600 shrink-0 mt-0.5" />
-                <p className="text-sm text-orange-800">
-                  Saving will regenerate your personalized nutrition plan using our local AI. 
-                  This may take a few moments.
-                </p>
-              </div>
-
-              <div className="flex gap-3 pt-4 border-t border-slate-100">
-                <button
-                  onClick={onClose}
-                  disabled={saving}
-                  className="flex-1 px-4 py-2.5 text-sm font-bold text-slate-700 bg-slate-100 rounded-xl hover:bg-slate-200 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleSave}
-                  disabled={saving}
-                  className="flex-1 px-4 py-2.5 text-sm font-bold text-white bg-orange-500 rounded-xl hover:bg-orange-600 transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm shadow-orange-200"
-                >
-                  {saving ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      Saving & Generating...
-                    </>
-                  ) : (
-                    <>
-                      <Save className="w-4 h-4" />
-                      Save & Regenerate
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
-          )}
-        </motion.div>
-      </div>
-    </AnimatePresence>
+          <div className="flex items-start gap-3 p-4 bg-orange-50 rounded-xl border border-orange-100">
+            <Info className="w-5 h-5 text-orange-600 shrink-0 mt-0.5" />
+            <p className="text-xs text-orange-800 leading-relaxed">
+              Saving will regenerate your personalized nutrition plan using AI. Your meal recommendations, calorie targets, and macronutrient balance will adapt to your preferences.
+            </p>
+          </div>
+        </form>
+      )}
+    </Modal>
   );
 };
 

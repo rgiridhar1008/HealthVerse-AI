@@ -2,6 +2,10 @@ export interface NutritionPlan {
   dailyCaloriesTarget: number;
   proteinTarget: number;
   waterTarget: number;
+  dietType?: string;
+  planName?: string;
+  guidance?: string;
+  recommendations?: string[];
   meals: {
     breakfast: string[];
     lunch: string[];
@@ -13,6 +17,8 @@ export interface NutritionPlan {
 export interface FitnessPlan {
   dailyStepGoal: number;
   workoutDuration: number; // in minutes
+  aiInsight?: string;
+  guidance?: string;
   weeklyPlan: {
     day: string;
     activity: string;

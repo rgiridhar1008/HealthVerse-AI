@@ -36,4 +36,8 @@ public class UpdateHealthProfileRequest {
     private String dietaryPreference;
 
     private String sleepPattern;
+
+    private String bloodGroup;
+
+    private String currentMedications;
 }
