@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { wellnessApi } from '../services/wellnessApi';
 import { NutritionPlan } from '../types/wellness';
-import { Apple, Droplets, Flame, Utensils, Loader2, Sparkles, CheckCircle2, Settings } from 'lucide-react';
+import { Apple, Droplets, Flame, Utensils, Loader2, Sparkles, CheckCircle2, Settings, ShieldCheck, Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
 import NutritionPreferencesModal from '../components/NutritionPreferencesModal';
@@ -22,7 +22,6 @@ const Nutrition = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [isGenerating, setIsGenerating] = useState(false);
 
   const fetchPlan = async () => {
@@ -66,7 +65,7 @@ const Nutrition = () => {
           </div>
         </div>
         <p className="text-slate-500 text-sm font-medium animate-pulse">
-          {isGenerating ? 'Generating your personalized plan with local AI...' : 'Analyzing Nutrition Profile...'}
+          {isGenerating ? 'Generating your personalized nutrition plan...' : 'Reviewing nutrition profile...'}
         </p>
       </div>
     );
@@ -142,13 +141,20 @@ const Nutrition = () => {
     >
       <motion.div variants={item} className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white p-6 rounded-2xl shadow-sm border border-slate-100 gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold text-slate-900 flex items-center gap-3">
-            <div className="p-2 bg-orange-50 rounded-xl">
-              <Apple className="h-8 w-8 text-orange-500" />
-            </div>
-            Personalized Nutrition
-          </h1>
-          <p className="text-slate-500 mt-2">AI-generated dietary targets based on your unique health twin profile.</p>
+          <div className="flex items-center gap-2.5 mb-1">
+            <h1 className="text-3xl font-extrabold text-slate-900 flex items-center gap-3">
+              <div className="p-2 bg-orange-50 rounded-xl">
+                <Apple className="h-8 w-8 text-orange-500" />
+              </div>
+              Personalized Nutrition
+            </h1>
+            {plan.dietType && (
+              <span className="hidden sm:inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-800 border border-orange-200">
+                {plan.dietType}
+              </span>
+            )}
+          </div>
+          <p className="text-slate-500 mt-2">Culturally authentic dietary targets based on your unique health profile and preferences.</p>
         </div>
         
         <button 
@@ -160,19 +166,22 @@ const Nutrition = () => {
         </button>
       </motion.div>
 
-      <motion.div variants={item} className="bg-gradient-to-br from-orange-500 to-orange-700 rounded-2xl shadow-lg p-6 text-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 p-4 opacity-10">
-          <Utensils className="w-24 h-24" />
+      {/* AI Nutrition Insight / Hydration guidance */}
+      <motion.div variants={item} className="bg-amber-50/80 border border-amber-200/80 rounded-2xl shadow-sm p-6 relative overflow-hidden">
+        <div className="absolute top-0 right-0 p-4 opacity-5">
+          <Utensils className="w-24 h-24 text-amber-700" />
         </div>
         <div className="flex items-center gap-2 mb-2 relative z-10">
-          <Sparkles className="h-5 w-5 text-orange-200" />
-          <h3 className="font-semibold text-orange-100 tracking-wide uppercase text-sm">AI Nutrition Insight</h3>
+          <div className="p-1.5 bg-amber-100 text-amber-700 rounded-lg">
+            <Sparkles className="h-4 w-4" />
+          </div>
+          <h3 className="font-bold text-amber-900 tracking-wider uppercase text-xs">AI Nutrition & Hydration Guidance</h3>
         </div>
-        <div className="relative z-10 max-w-2xl">
-          <p className="text-lg font-medium leading-snug">
-            {plan.dailyCaloriesTarget === 0 
-              ? "Your nutrition plan is empty. Click 'Personalize Plan' to generate a plan tailored to your profile." 
-              : "Based on your preferences, this plan provides balanced macronutrients to support your wellness goals. Ensure you stay hydrated throughout the day."}
+        <div className="relative z-10 max-w-3xl">
+          <p className="text-base font-semibold text-slate-800 leading-relaxed">
+            {plan.guidance 
+              ? plan.guidance 
+              : "Based on your preferences, this plan provides balanced macronutrients with authentic regional staples to sustain your energy, optimize recovery, and support metabolic health."}
           </p>
         </div>
       </motion.div>
@@ -184,7 +193,7 @@ const Nutrition = () => {
             <Flame className="h-8 w-8 text-orange-500" />
           </div>
           <div>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Calories</p>
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Daily Calories</p>
             <div className="flex items-baseline gap-1">
               <span className="text-3xl font-black text-slate-900">{plan.dailyCaloriesTarget}</span>
               <span className="text-sm font-medium text-slate-500">kcal</span>
@@ -197,7 +206,7 @@ const Nutrition = () => {
             <Apple className="h-8 w-8 text-red-500" />
           </div>
           <div>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Protein</p>
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Target Protein</p>
             <div className="flex items-baseline gap-1">
               <span className="text-3xl font-black text-slate-900">{plan.proteinTarget}</span>
               <span className="text-sm font-medium text-slate-500">g</span>
@@ -210,7 +219,7 @@ const Nutrition = () => {
             <Droplets className="h-8 w-8 text-blue-500" />
           </div>
           <div>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Hydration</p>
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Daily Hydration</p>
             <div className="flex items-baseline gap-1">
               <span className="text-3xl font-black text-slate-900">{plan.waterTarget}</span>
               <span className="text-sm font-medium text-slate-500">L</span>
@@ -219,11 +228,14 @@ const Nutrition = () => {
         </motion.div>
       </motion.div>
 
-      {/* Meals */}
+      {/* Meals Grid */}
       <motion.div variants={item} className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-        <div className="p-6 border-b border-slate-100 bg-slate-50 flex items-center gap-3">
-          <Utensils className="h-6 w-6 text-slate-400" />
-          <h2 className="text-lg font-bold text-slate-900">Today's Recommended Meals</h2>
+        <div className="p-6 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Utensils className="h-6 w-6 text-slate-500" />
+            <h2 className="text-lg font-bold text-slate-900">Today's Recommended Meals</h2>
+          </div>
+          <span className="text-xs font-medium text-slate-500 hidden sm:inline">Portion-conscious regional Indian choices</span>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 lg:divide-x divide-slate-100">
@@ -231,26 +243,57 @@ const Nutrition = () => {
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 + (idx * 0.1) }}
+              transition={{ delay: 0.1 * idx }}
               key={mealName} 
-              className="p-8 hover:bg-slate-50 transition-colors"
+              className="p-6 sm:p-8 hover:bg-slate-50/70 transition-colors flex flex-col justify-between"
             >
-              <h3 className="text-sm font-bold text-slate-900 uppercase tracking-widest mb-6 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-orange-500" />
-                {mealName.charAt(0).toUpperCase() + mealName.slice(1)}
-              </h3>
-              <ul className="space-y-4">
-                {items.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0" />
-                    <span className="text-sm font-medium text-slate-700 leading-snug">{item}</span>
-                  </li>
-                ))}
-              </ul>
+              <div>
+                <h3 className="text-sm font-bold text-slate-900 uppercase tracking-widest mb-4 flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-orange-500" />
+                  {mealName.charAt(0).toUpperCase() + mealName.slice(1)}
+                </h3>
+                {items && items.length > 0 ? (
+                  <ul className="space-y-3.5">
+                    {items.map((it, i) => (
+                      <li key={i} className="flex items-start gap-2.5">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                        <span className="text-sm font-medium text-slate-700 leading-snug">{it}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-xs text-slate-400 italic">Nutritious options scheduled with your preferences.</p>
+                )}
+              </div>
             </motion.div>
           ))}
         </div>
       </motion.div>
+
+      {/* Practical Indian Dietary Guidelines */}
+      {plan.recommendations && plan.recommendations.length > 0 && (
+        <motion.div variants={item} className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 sm:p-8 space-y-4">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 bg-emerald-50 text-emerald-600 rounded-xl">
+              <ShieldCheck className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-base font-bold text-slate-900">Practical Indian Dietary Habits</h3>
+              <p className="text-xs text-slate-500">Actionable advice for sustainable cooking, digestion, and macronutrient balance.</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+            {plan.recommendations.map((rec, i) => (
+              <div key={i} className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                <span className="h-6 w-6 rounded-full bg-orange-100 text-orange-700 font-bold text-xs flex items-center justify-center shrink-0">
+                  {i + 1}
+                </span>
+                <p className="text-xs sm:text-sm font-medium text-slate-700 leading-relaxed">{rec}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      )}
 
       {user && (
         <NutritionPreferencesModal 

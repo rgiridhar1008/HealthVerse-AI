@@ -79,7 +79,17 @@ public class FitnessService {
         Integer sessionDuration = request.getSessionDurationMinutes() != null ? request.getSessionDurationMinutes() : 45;
         Integer durationDays = request.getDurationDays() != null ? request.getDurationDays() : 30;
 
-        int burnTarget = sessionDuration * 8; // dummy calc
+        double weight = (profile.getWeight() != null && profile.getWeight() > 20) ? profile.getWeight() : 70.0;
+        double met = 6.0;
+        String fl = fitnessLevel.toLowerCase();
+        if (fl.contains("beginner") || fl.contains("light")) {
+            met = 4.5;
+        } else if (fl.contains("advanced") || fl.contains("high") || fl.contains("expert")) {
+            met = 8.5;
+        } else if (fl.contains("intermediate")) {
+            met = 6.5;
+        }
+        int burnTarget = (int) Math.round((sessionDuration / 60.0) * met * weight);
         
         String workoutPlan = "";
         try {

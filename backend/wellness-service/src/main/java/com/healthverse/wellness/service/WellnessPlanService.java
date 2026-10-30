@@ -116,9 +116,23 @@ public class WellnessPlanService {
 
             if (aiResponse.statusCode() >= 200 && aiResponse.statusCode() < 300 && aiResponse.body() != null) {
                 WellnessGenerateResponse res = mapper.readValue(aiResponse.body(), WellnessGenerateResponse.class);
-                description = "Habits: " + String.join(", ", res.getDaily_habits()) + "\n" +
-                              "Sleep: " + String.join(", ", res.getSleep_recommendations()) + "\n" +
-                              "Stress: " + String.join(", ", res.getStress_management());
+                StringBuilder sb = new StringBuilder();
+                if (res.getSleep_recommendations() != null) {
+                    for (String r : res.getSleep_recommendations()) {
+                        if (r != null && !r.isBlank()) sb.append(r.trim()).append("\n");
+                    }
+                }
+                if (res.getStress_management() != null) {
+                    for (String r : res.getStress_management()) {
+                        if (r != null && !r.isBlank()) sb.append(r.trim()).append("\n");
+                    }
+                }
+                if (res.getDaily_habits() != null) {
+                    for (String r : res.getDaily_habits()) {
+                        if (r != null && !r.isBlank()) sb.append(r.trim()).append("\n");
+                    }
+                }
+                description = sb.toString().trim();
             } else {
                 throw new BadRequestException("AI Agent Service returned an error.");
             }

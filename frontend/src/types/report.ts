@@ -18,6 +18,7 @@ export interface ReportAnalysis {
   id: string;
   reportId: string;
   analysisStatus: string;
+  currentStage?: string;
   summary: string;
   findings: Finding[];
   abnormalValues: AbnormalValue[];
@@ -26,3 +27,18 @@ export interface ReportAnalysis {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface ReportListItem {
+  id: string;
+  userId: number;
+  fileName: string;
+  contentType: string;
+  fileSize: number;
+  reportType: string;
+  reportDate: string;
+  description: string;
+  uploadDate: string;
+  processingStatus: string;
+  analysisStatus: string;
+}
+

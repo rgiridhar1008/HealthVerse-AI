@@ -73,7 +73,7 @@ const Wellness = () => {
           </div>
         </div>
         <p className="text-slate-500 text-sm font-medium animate-pulse">
-          {isGenerating ? 'Generating your personalized plan with local AI...' : 'Analyzing Wellness Patterns...'}
+          {isGenerating ? 'Generating your personalized wellness insights...' : 'Analyzing wellness patterns...'}
         </p>
       </div>
     );

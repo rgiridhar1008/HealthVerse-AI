@@ -1,5 +1,6 @@
 package com.healthverse.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -57,8 +58,16 @@ public class DigitalHealthTwinDto {
     @AllArgsConstructor
     public static class RadarDataDto {
         private String subject;
+
+        @JsonProperty("A")
         private Integer A;
+
         private Integer fullMark;
+
+        @JsonProperty("a")
+        public Integer getA_lowercase() {
+            return this.A;
+        }
     }
 
     @Data

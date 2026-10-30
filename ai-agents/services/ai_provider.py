@@ -130,12 +130,18 @@ class AIProvider:
                 }
             elif feature == "diet":
                 return {
-                    "dailyCalories": 2200,
-                    "macroSplit": {"protein": "140g", "carbs": "220g", "fats": "65g"},
-                    "meals": [
-                        {"meal": "Breakfast", "items": ["Oatmeal with berries", "Boiled eggs"], "calories": 450},
-                        {"meal": "Lunch", "items": ["Grilled chicken or lentils", "Quinoa and spinach"], "calories": 650},
-                        {"meal": "Dinner", "items": ["Baked salmon or tofu", "Steamed greens"], "calories": 550}
+                    "meal_suggestions": [
+                        "Breakfast: 2 Steamed Ragi Idlis or Moong Dal Chilla with vegetable sambar, mint chutney, and 1 boiled egg (or 50g paneer bhurji) (approx. 380 kcal)",
+                        "Lunch: 2 Phulkas (multigrain roti) with 1 bowl Tadka Dal, 1 bowl Palak Sabzi, cucumber-curd raita, and grilled chicken breast or tofu (approx. 550 kcal)",
+                        "Snacks: 1 bowl Sprouted Moong Chaat with lemon & chaat masala, or roasted makhana & roasted chana (approx. 180 kcal)",
+                        "Dinner: 1 cup Brown Rice or Millets with Rajma / Chhole curry or Fish curry, steamed green beans poriyal, and sliced tomato salad (approx. 490 kcal)"
+                    ],
+                    "hydration_guidance": "Drink 2.5 - 3 Liters of water daily. Include spiced chaas (buttermilk with roasted jeera & mint) or warm jeera water between meals for optimal digestion.",
+                    "practical_recommendations": [
+                        "Use cold-pressed mustard, sesame, or moderate cow's ghee instead of refined oils.",
+                        "Prioritize high-protein Indian staples: sprouts, paneer, lentils, curd, and lean eggs/chicken.",
+                        "Limit deep-fried evening snacks; replace with roasted makhana, boiled peanuts, or chana sundal.",
+                        "Finish dinner at least 2 hours before bedtime to support circadian digestive health."
                     ]
                 }
             elif feature == "fitness":

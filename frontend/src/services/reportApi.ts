@@ -1,5 +1,5 @@
 import api from './api';
-import { ReportAnalysis } from '../types/report';
+import { ReportAnalysis, ReportListItem } from '../types/report';
 
 export const reportApi = {
   uploadReport: async (file: File, onProgress?: (progress: number) => void): Promise<{ id: string }> => {
@@ -34,8 +34,9 @@ export const reportApi = {
     return response.data;
   },
 
-  getAllReports: async (): Promise<any[]> => {
-    const response = await api.get<any[]>('/api/reports');
+  getAllReports: async (): Promise<ReportListItem[]> => {
+    const response = await api.get<ReportListItem[]>('/api/reports');
     return response.data;
   }
 };
+

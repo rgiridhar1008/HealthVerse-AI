@@ -64,11 +64,11 @@ const SymptomAnalyzer = () => {
     } catch (err: any) {
       let errorText = 'An error occurred while analyzing your symptoms. Please try again later.';
       if (err.response?.status === 504 || err.response?.status === 502) {
-        errorText = "Local AI service unavailable or timed out. Please check if Ollama is running.";
+        errorText = "AI analysis service is currently unavailable or timed out. Please try again shortly.";
       } else if (err.response?.data?.detail) {
         errorText = `AI Service Error: ${err.response.data.detail}`;
       } else if (err.message && err.message.toLowerCase().includes('timeout')) {
-        errorText = "Request timed out waiting for local AI. It might be starting up.";
+        errorText = "Request timed out waiting for AI analysis. Please try again.";
       }
       setError(errorText);
     } finally {
@@ -199,7 +199,7 @@ const SymptomAnalyzer = () => {
                 {isAnalyzing ? (
                   <>
                     <Loader2 className="animate-spin h-5 w-5 mr-2" />
-                    Analyzing with local AI...
+                    AI is analyzing symptoms...
                   </>
                 ) : (
                   <>
@@ -236,8 +236,8 @@ const SymptomAnalyzer = () => {
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary-100 rounded-full blur-3xl opacity-50 animate-pulse" />
                   <div className="relative z-10 flex flex-col items-center">
                     <Loader2 className="h-12 w-12 text-primary-600 animate-spin mb-6" />
-                    <h3 className="text-xl font-bold text-slate-900 mb-2">Analyzing with local AI...</h3>
-                    <p className="max-w-xs text-sm text-slate-500">Our local model is processing your symptoms securely.</p>
+                    <h3 className="text-xl font-bold text-slate-900 mb-2">AI is analyzing your symptoms...</h3>
+                    <p className="max-w-xs text-sm text-slate-500">Reviewing your symptoms and available health information.</p>
                   </div>
                 </div>
               )}

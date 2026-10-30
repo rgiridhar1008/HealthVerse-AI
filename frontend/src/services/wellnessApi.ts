@@ -6,16 +6,20 @@ export const wellnessApi = {
     try {
       const res = await api.get<any[]>('/api/nutrition/plans');
       let data = res.data && res.data.length > 0 ? res.data[0] : null;
-      
+
       if (!data) return null;
-      
-      // Parse AI-generated mealPlan text into meal categories
-      const meals = parseMealPlan(data.mealPlan);
-      
+
+      // Parse AI-generated mealPlan text into meal categories and recommendations
+      const { meals, guidance, recommendations } = parseMealPlan(data.mealPlan);
+
       return {
         dailyCaloriesTarget: data.dailyCalories || 0,
         proteinTarget: data.proteinGrams || 0,
         waterTarget: data.waterLiters || 0,
+        dietType: data.dietType,
+        planName: data.planName,
+        guidance,
+        recommendations,
         meals
       };
     } catch (e) {
@@ -33,12 +37,12 @@ export const wellnessApi = {
     try {
       const res = await api.get<any[]>('/api/fitness/plans');
       let data = res.data && res.data.length > 0 ? res.data[0] : null;
-      
+
       if (!data) return null;
-      
+
       // Parse AI-generated workoutPlan into weekly plan
       const weeklyPlan = parseWorkoutPlan(data.workoutPlan);
-      
+
       return {
         dailyStepGoal: 10000,
         workoutDuration: data.sessionDurationMinutes || 45,
@@ -59,12 +63,12 @@ export const wellnessApi = {
     try {
       const res = await api.get<any[]>('/api/wellness/plans');
       let data = res.data && res.data.length > 0 ? res.data[0] : null;
-      
+
       if (!data) return null;
-      
+
       // Parse the AI-generated description into recommendations
       const recommendations = parseWellnessDescription(data.description);
-      
+
       return {
         sleepGoal: 8,
         currentStressLevel: 'Moderate',
@@ -92,9 +96,9 @@ export const wellnessApi = {
       if (Array.isArray(data) && data.length > 0) {
         data = data[0];
       }
-      
-      const isInsufficientOrError = !data || 
-        data.area === 'Wellness API Error' || 
+
+      const isInsufficientOrError = !data ||
+        data.area === 'Wellness API Error' ||
         (data.reason && (data.reason.includes('Could not reach AI service') || data.reason.includes('absence of historical data')));
 
       if (isInsufficientOrError) {
@@ -141,59 +145,67 @@ export const wellnessApi = {
  * Looks for keywords like "Breakfast:", "Lunch:", "Dinner:", "Snack:" in the text.
  * Falls back to splitting by lines if no keywords found.
  */
-function parseMealPlan(mealPlanText?: string): { breakfast: string[]; lunch: string[]; dinner: string[]; snacks: string[] } {
+function parseMealPlan(mealPlanText?: string): {
+  meals: { breakfast: string[]; lunch: string[]; dinner: string[]; snacks: string[] };
+  guidance?: string;
+  recommendations: string[];
+} {
   const meals = { breakfast: [] as string[], lunch: [] as string[], dinner: [] as string[], snacks: [] as string[] };
-  
+  const recommendations: string[] = [];
+  let guidance = '';
+
   if (!mealPlanText || mealPlanText.trim().length === 0) {
-    return meals;
+    return { meals, guidance, recommendations };
   }
 
   const text = mealPlanText.trim();
   const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-  
-  // Try to detect labeled sections
-  let currentCategory: keyof typeof meals | null = null;
+
+  let currentCategory: keyof typeof meals | 'recommendations' | null = null;
   let hasLabels = false;
-  
+
   for (const line of lines) {
     const lower = line.toLowerCase();
-    
-    // Check if line contains keywords (more flexible than startsWith)
-    const isBreakfast = lower.startsWith('breakfast') || lower.includes('breakfast');
-    const isLunch = lower.startsWith('lunch') || lower.includes('lunch');
-    const isDinner = lower.startsWith('dinner') || lower.startsWith('supper') || lower.includes('dinner') || lower.includes('supper');
-    const isSnack = lower.startsWith('snack') || lower.includes('snack');
-    
-    if (isBreakfast) {
+
+    if (lower.startsWith('hydration:')) {
+      guidance = line.replace(/^hydration:\s*/i, '').trim();
+      currentCategory = null;
+    } else if (lower.startsWith('recommendations:') || lower.startsWith('practical recommendations:')) {
+      currentCategory = 'recommendations';
+      hasLabels = true;
+    } else if (lower.startsWith('breakfast') || lower.includes('breakfast:')) {
       currentCategory = 'breakfast';
       hasLabels = true;
       let content = line.replace(/^(breakfast|start.*breakfast.*with|have.*for breakfast)[:\s-]*/i, '').trim();
-      if (!content && lower.includes('breakfast')) content = line; // fallback
+      if (!content && lower.includes('breakfast')) content = line;
       if (content) meals.breakfast.push(content);
-    } else if (isLunch) {
+    } else if (lower.startsWith('lunch') || lower.includes('lunch:')) {
       currentCategory = 'lunch';
       hasLabels = true;
       let content = line.replace(/^(lunch|for lunch.*have)[:\s-]*/i, '').trim();
       if (!content && lower.includes('lunch')) content = line;
       if (content) meals.lunch.push(content);
-    } else if (isDinner) {
+    } else if (lower.startsWith('dinner') || lower.startsWith('supper') || lower.includes('dinner:')) {
       currentCategory = 'dinner';
       hasLabels = true;
       let content = line.replace(/^(dinner|supper|for dinner.*have)[:\s-]*/i, '').trim();
       if (!content && lower.includes('dinner')) content = line;
       if (content) meals.dinner.push(content);
-    } else if (isSnack) {
+    } else if (lower.startsWith('snack') || lower.includes('snack:')) {
       currentCategory = 'snacks';
       hasLabels = true;
       let content = line.replace(/^(snacks?|for snacks?.*have)[:\s-]*/i, '').trim();
       if (!content && lower.includes('snack')) content = line;
       if (content) meals.snacks.push(content);
-    } else if (currentCategory) {
+    } else if (currentCategory === 'recommendations') {
+      const cleaned = line.replace(/^[-•*\d.]\s*/, '').trim();
+      if (cleaned) recommendations.push(cleaned);
+    } else if (currentCategory && currentCategory in meals) {
       const cleaned = line.replace(/^[-•*]\s*/, '').trim();
-      if (cleaned) meals[currentCategory].push(cleaned);
+      if (cleaned) meals[currentCategory as keyof typeof meals].push(cleaned);
     }
   }
-  
+
   // If no labeled sections found, distribute lines evenly
   if (!hasLabels && lines.length > 0) {
     const categories: (keyof typeof meals)[] = ['breakfast', 'lunch', 'dinner', 'snacks'];
@@ -204,8 +216,8 @@ function parseMealPlan(mealPlanText?: string): { breakfast: string[]; lunch: str
       }
     });
   }
-  
-  return meals;
+
+  return { meals, guidance, recommendations };
 }
 
 /**
@@ -241,12 +253,12 @@ function parseWorkoutPlan(workoutPlanText?: string): { day: string; activity: st
     // Single-line plan
     return [{ day: 'Everyday', activity: workoutPlanText.split('\n')[0].substring(0, 100) }];
   }
-  
+
   activities.slice(0, 7).forEach((activity, idx) => {
     const cleaned = activity.replace(/^[-•*]\s*/, '').trim();
     plan.push({ day: dayNames[idx % 7], activity: cleaned || 'Active Training' });
   });
-  
+
   // Fill remaining days with Rest if we have fewer than 7
   if (plan.length < 7 && plan.length > 0) {
     const coveredDays = plan.map(p => p.day);
@@ -268,20 +280,18 @@ function parseWellnessDescription(description?: string): string[] {
   if (!description || description.trim().length === 0) {
     return [];
   }
-  
-  // Split by labeled sections
-  const sections = description.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+
+  const lines = description.split('\n').map(l => l.trim()).filter(l => l.length > 0);
   const recommendations: string[] = [];
-  
-  for (const line of sections) {
-    // Remove category labels like "Habits:", "Sleep:", "Stress:" but keep content
-    const cleaned = line.replace(/^(Habits|Sleep|Stress|Daily Habits|Sleep Recommendations|Stress Management)[:\s-]*/i, '').trim();
-    if (cleaned.length > 3) {
-      // Split by comma or semicolon if the line contains multiple items
-      const items = cleaned.split(/[,;]/).map(s => s.trim()).filter(s => s.length > 3);
-      recommendations.push(...items);
+
+  for (const line of lines) {
+    // Remove category labels or bullet points
+    const cleaned = line.replace(/^(Habits|Sleep|Stress|Daily Habits|Sleep Recommendations|Stress Management)[:\s-]*/i, '')
+      .replace(/^[-•*]\s*/, '').trim();
+    if (cleaned.length > 10) {
+      recommendations.push(cleaned);
     }
   }
-  
+
   return recommendations;
 }

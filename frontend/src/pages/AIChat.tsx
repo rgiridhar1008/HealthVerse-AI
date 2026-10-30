@@ -69,11 +69,11 @@ const AIChat = () => {
     } catch (error: any) {
       let errorText = "I'm sorry, I'm having trouble connecting right now. Please try again later.";
       if (error.response?.status === 504 || error.response?.status === 502) {
-        errorText = "Local AI service unavailable or timed out. Please check if Ollama is running.";
+        errorText = "AI service is currently unavailable or timed out. Please try again shortly.";
       } else if (error.response?.data?.detail) {
         errorText = `AI Service Error: ${error.response.data.detail}`;
       } else if (error.message && error.message.toLowerCase().includes('timeout')) {
-        errorText = "Request timed out waiting for local AI. It might be starting up.";
+        errorText = "Request timed out waiting for AI response. Please try again.";
       }
 
       const errorMessage: ChatMessage = {
@@ -182,7 +182,7 @@ const AIChat = () => {
                     <span className="w-2 h-2 bg-primary-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>
                     <span className="w-2 h-2 bg-primary-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></span>
                   </div>
-                  <span className="text-sm font-medium text-slate-500">Thinking with local AI...</span>
+                  <span className="text-sm font-medium text-slate-500">AI is preparing a response...</span>
                 </div>
               </div>
             </motion.div>
